@@ -1,11 +1,11 @@
 ---
 name: update-studio-atlas
-description: 'Update the Game Studio Map project: add, edit, or remove game studio profiles in game_studios_enzyklop_die.md, register resources in studio-resources.mjs, rebuild game-studio-report.html, and run tests. Use when: adding a studio, updating studio data (project, engine, investor, layoffs), fixing locations, refreshing job listings, or regenerating the report.'
+description: 'Update the Game Studio Map project: add, edit, or remove game studio profiles in game_studios_enzyklop_die.md, register resources in studio-resources.mjs, rebuild index.html, and run tests. Use when: adding a studio, updating studio data (project, engine, investor, layoffs), fixing locations, refreshing job listings, or regenerating the report.'
 ---
 
 # Update Game Studio Map
 
-The project builds a self-contained HTML report (`game-studio-report.html`) from
+The project builds a self-contained HTML report (`index.html`) from
 a Markdown source. Never edit the generated HTML or `report-data.json` by hand —
 always change inputs and rebuild.
 
@@ -13,7 +13,7 @@ always change inputs and rebuild.
 
 `game_studios_enzyklop_die.md` (source, English) + `studio-resources.mjs`
 (editorial resources) → `node build-report.mjs` parses, categorizes, and injects
-data into `report-template.html` → `game-studio-report.html`. `report-data.json`
+data into `report-template.html` → `index.html`. `report-data.json`
 is the research cache (jobs, map, flags, artwork).
 
 ## Step 1 — Edit the source document
@@ -83,6 +83,9 @@ reclassify public listings; `--reparse` reuses cached job research.
 
 ## Step 3 — Rebuild
 
+All build modes and update commands generate `index.html` in the project root,
+the GitHub Pages entry point. Never introduce a differently named report copy.
+
 - **One-command AI-assisted maintenance:** run `/update-game-studio-map` in
   VS Code Copilot Chat. The workspace prompt requires research of every profile
   and all eight fields, citations, honest unknowns, career taxonomy review,
@@ -120,14 +123,14 @@ reclassify public listings; `--reparse` reuses cached job research.
    English canonical values from `build-report.mjs`; add their German
    translations to `valueNamesDe` in `report-template.html`, and new UI strings
    to BOTH `translations.en` and `translations.de` there.
-4. Spot-check in a browser: open `game-studio-report.html`, toggle EN/DE in the
+4. Spot-check in a browser: open `index.html`, toggle EN/DE in the
    top bar, expand the changed studio's profile, verify the update date and
    career selectors, and toggle legend entries off and on. Legend toggles affect
    the map only; the directory and statistic cards retain the shared filters.
 
 ## Do not
 
-- Do not edit `game-studio-report.html` or `report-data.json` directly.
+- Do not edit `index.html` or `report-data.json` directly.
 - Do not translate studio data to German — the source is English; German exists
   only as UI translations in the template.
 - Do not rename `game_studios_enzyklop_die.md` without updating `sourceFile`

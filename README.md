@@ -2,7 +2,7 @@
 
 An interactive, offline-capable atlas of the world's major game studios. The
 English Markdown encyclopedia [game_studios_enzyklop_die.md](game_studios_enzyklop_die.md)
-is compiled into a self-contained HTML page ([game-studio-report.html](game-studio-report.html))
+is compiled into a self-contained HTML page ([index.html](index.html))
 — with a world map, filter panel, studio profiles, researched job listings, and
 Steam artwork, all without a server or external runtime resources.
 
@@ -27,7 +27,13 @@ Steam artwork, all without a server or external runtime resources.
 
 ## Quick start
 
-Open the finished report by double-clicking `game-studio-report.html`.
+Open the finished report by double-clicking `index.html`.
+
+Every build mode and both update workflows generate `index.html` in the project
+root. To publish it at https://michagrandel.github.io/game-studio-map/, push the
+generated file and enable GitHub Pages under **Settings → Pages**, selecting
+**Deploy from a branch**, your publishing branch, and **/ (root)**.
+GitHub Pages serves the generated file; it does not refresh the dataset.
 
 ## Project structure
 
@@ -43,7 +49,7 @@ Open the finished report by double-clicking `game-studio-report.html`.
 | `.github/prompts/update-game-studio-map.prompt.md` | AI-assisted complete research command for VS Code Copilot Chat |
 | `report-template.html` | HTML template (dark mode, EN/DE switch); the data is injected into the `/*__REPORT_DATA__*/` placeholder |
 | `report-data.json` | Cache of the research results (jobs, map, flags, artwork) |
-| `game-studio-report.html` | Generated, self-contained report — open directly in a browser |
+| `index.html` | Generated, self-contained report and GitHub Pages entry point — open directly in a browser |
 | `report.test.mjs` | Tests (node:test) validating the report's fidelity to the source, coordinates, and links |
 | `studios.md` | Original task brief for the encyclopedia (German) |
 | `.agents/skills/update-studio-atlas/` | Agent skill guiding the data-maintenance workflow (see below) |

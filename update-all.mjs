@@ -49,12 +49,12 @@ async function update() {
   if (!args.includes('--collect-only')) {
     await runNode(['build-report.mjs', '--refresh']);
     await runNode(['--test']);
-    console.log('Career refresh and report rebuild complete; Last updated reflects this build. Studio evidence/gaps are shown in profile details.');
+    console.log('Career refresh and index.html rebuild complete; Last updated reflects this build. Studio evidence/gaps are shown in profile details.');
   }
 }
 
 if (args.includes('--help')) {
-  console.log('node update-all.mjs: collect non-AI studio evidence, refresh all careers/assets, rebuild Last updated, run tests.\nnode update-all.mjs --collect-only: collect evidence without rebuilding.\nAI-assisted full research: run /update-game-studio-map in VS Code Copilot Chat.');
+  console.log('node update-all.mjs: collect non-AI studio evidence, refresh all careers/assets, rebuild index.html and Last updated, run tests.\nnode update-all.mjs --collect-only: collect evidence without rebuilding.\nAI-assisted full research: run /update-game-studio-map in VS Code Copilot Chat.');
 } else {
   await update();
 }

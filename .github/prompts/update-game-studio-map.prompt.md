@@ -38,9 +38,10 @@ publishing private workspace data or committing changes.
    and tests. Never remove a career just because no current vacancies exist.
 5. Run `node update-all.mjs` once source research is complete. This recollects
    official-site evidence, refreshes every studio's careers and assets,
-   rebuilds the HTML and its `Last updated` date, and runs the test suite.
+   rebuilds `index.html` in the project root and its `Last updated` date,
+   and runs the test suite.
    Fix failures caused by these edits and rerun the smallest relevant checks.
-6. Browser-check the header date, both career selectors, EN/DE, map/directory
+6. Open `index.html` and browser-check the header date, both career selectors, EN/DE, map/directory
    filters, and interactive legend. Summarize profiles/fields researched,
    unresolved facts, inaccessible career sources and validation results.
    Full research means every profile/field was attempted, not that unavailable

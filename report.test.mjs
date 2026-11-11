@@ -6,7 +6,7 @@ import { careerCategories, careerCategoryNamesDe, classifyCareerTitle, isCareerJ
 import { validateStudioResearch } from './studio-research.mjs';
 
 const source = await readFile(new URL('./game_studios_enzyklop_die.md', import.meta.url), 'utf8');
-const html = await readFile(new URL('./game-studio-report.html', import.meta.url), 'utf8');
+const html = await readFile(new URL('./index.html', import.meta.url), 'utf8');
 const data = JSON.parse(html.match(/<script id="report-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
 const clean = value => value.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, name, label) => label || name).replace(/\*/g, '').trim();
 

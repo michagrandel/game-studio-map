@@ -429,5 +429,5 @@ for (const [index, studio] of data.studios.entries()) {
 }
 await writeFile(cacheFile, JSON.stringify(data));
 const template = await readFile('report-template.html', 'utf8');
-await writeFile('game-studio-report.html', template.replace('/*__REPORT_DATA__*/', JSON.stringify(data).replace(/</g, '\\u003c')));
-console.log(`Built game-studio-report.html: ${data.studios.length} profiles, ${data.studios.reduce((sum, studio) => sum + studio.sites.length, 0)} locations, ${data.studios.reduce((sum, studio) => sum + studio.research.jobs.length, 0)} job postings.`);
+await writeFile('index.html', template.replace('/*__REPORT_DATA__*/', JSON.stringify(data).replace(/</g, '\\u003c')));
+console.log(`Built index.html: ${data.studios.length} profiles, ${data.studios.reduce((sum, studio) => sum + studio.sites.length, 0)} locations, ${data.studios.reduce((sum, studio) => sum + studio.research.jobs.length, 0)} job postings.`);

@@ -60,5 +60,6 @@ test('AI full-refresh prompt requests all fields, honest gaps and the tested fin
   assert.match(prompt, /EVERY studio/);
   assert.match(prompt, /all eight source fields/);
   assert.match(prompt, /Run `node update-all.mjs`/);
+  assert.match(prompt, /rebuilds `index\.html`/);
   assert.match(prompt, /web research is unavailable, stop/);
 });
