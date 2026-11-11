@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { resources, cities, locationOverrides, games } from './studio-resources.mjs';
 import { careerCategories, careerCategoryNamesDe, classifyCareerTitle, isCareerJobTitle } from './career-categories.mjs';
-import { validateStudioResearch } from './studio-research.mjs';
+import { assertStudioAllowed, validateStudioResearch } from './studio-research.mjs';
 
 const sourceFile = 'game_studios_enzyklop_die.md';
 const cacheFile = 'report-data.json';
@@ -31,6 +31,7 @@ function parseStudios() {
 }
 
 function createStudio(name, group, fields, index) {
+  assertStudioAllowed(name);
   const resource = resources.find(([prefix]) => name.startsWith(prefix));
   if (!resource) throw new Error(`Missing resources: ${name}`);
   const location = fields.Location;
@@ -90,7 +91,7 @@ function investorCategory(text) {
 
 function stabilityCategory(name, text) {
   const riskText = text.replace(/no(?:\s+\S+){0,3}\s+layoffs|without\s+layoff/gi, '').replace(/\bindependent\b/gi, 'standalone');
-  if (/Bungie|BioWare|Ubisoft Kyiv/.test(name) || /massive layoffs|under severe pressure|future.*uncertain|(severely|significantly|massively)\s+(downsized|reduced)|extreme conditions|flops/i.test(text)) return 'Elevated Risk';
+  if (/Bungie|Ubisoft Kyiv/.test(name) || /massive layoffs|under severe pressure|future.*uncertain|(severely|significantly|massively)\s+(downsized|reduced)|extreme conditions|flops/i.test(text)) return 'Elevated Risk';
   if (/layoff|restructur|overhaul|upheaval|pressure|risk|burden of proof|dependent|downsized|reduced|moderate|medium|streamlined|observation|project halts|strained|project cancellation|uncertain|job cuts|burden|transition/i.test(riskText)) return 'In Transition / Mixed';
   if (/stable|secur|safe|solid|profitable|healthy|successful|crisis-pro|reliable|crisis|strong|self-fund|self-fina|excellent|financially.*independent/i.test(text)) return 'Stable per Document';
   return 'Unclear';

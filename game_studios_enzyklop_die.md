@@ -422,17 +422,6 @@
 * **Investor/Parent Company:** EA (publicly traded)
 * **Future Outlook & Layoffs:** Reorganized after the mixed launch of *2042*; lead studio for Frostbite.
 
-### BioWare
-> **Data collected:** 2026-11-11
-* **Location:** Edmonton, Canada 🇨🇦
-* **Engine:** Frostbite Engine / Unreal Engine 5 (in part)
-* **Current Project:** *Mass Effect 5* (pre-production)
-* **Franchise:** [[Dragon Age]], [[Mass Effect]]
-* **Genre:** ⚔️ Action RPG
-* **Publisher:** Electronic Arts
-* **Investor/Parent Company:** EA
-* **Future Outlook & Layoffs:** Heavily downsized after the release of *Dragon Age: The Veilguard* and subsequent layoffs; future as a brand uncertain.
-
 ### Respawn Entertainment
 > **Data collected:** 2026-11-11
 * **Location:** Los Angeles, USA 🇺🇸

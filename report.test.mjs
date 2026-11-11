@@ -18,6 +18,39 @@ test('Game Studio Map branding and adjacent GitHub navigation link are present',
   assert.match(html, /'footer.brand':'GAME STUDIO MAP \/ Dokumentbasierter Branchenatlas'/);
 });
 
+test('all continent presets remain selectable even when the dataset has no studios there', () => {
+  assert.match(html, /populate\('continent',Object\.values\(continentsByView\)\)/);
+  const mapping = html.match(/^const continentsByView = .+;$/m)[0];
+  const matching = html.match(/function matchingSites\(studio\) \{[\s\S]*?\n\}/)[0];
+  const apply = html.match(/function applyMapView\(view\) \{[\s\S]*?\n\}/)[0];
+  const elements = {
+    continent: {
+      options: ['', 'Europe', 'Asia', 'North America', 'South America', 'Africa', 'Oceania'],
+      selected: '',
+      set value(value) { this.selected = this.options.includes(value) ? value : ''; },
+      get value() { return this.selected; },
+    },
+    country: { value: 'US' },
+  };
+  let matches;
+  const context = {
+    $: id => elements[id], DATA: data, views: {southamerica:[],africa:[],world:[]},
+    setCamera() {},
+    updateResults() {
+      matches = data.studios.filter(studio => runInNewContext(`${matching}; matchingSites(studio).length > 0`, {studio,$:id=>elements[id]}));
+    },
+  };
+  for (const [view, continent] of [['southamerica','South America'],['africa','Africa']]) {
+    runInNewContext(`${mapping}\n${apply}\napplyMapView('${view}');`, {...context});
+    assert.equal(elements.continent.value, continent);
+    assert.equal(elements.country.value, '');
+    assert.equal(matches.length, data.studios.filter(studio=>studio.sites.some(site=>site.continent===continent)).length);
+    assert.ok(matches.every(studio=>studio.sites.some(site=>site.continent===continent)));
+  }
+  runInNewContext(`${mapping}\n${apply}\napplyMapView('world');`, {...context});
+  assert.equal(matches.length, data.studios.length);
+});
+
 test('stable job security uses concise localized display labels', () => {
   const definition = html.match(/^const tv = .+;$/m)[0];
   assert.equal(runInNewContext(`${definition}; tv('Stable per Document')`, {lang:'en'}), 'Stable');
@@ -89,8 +122,9 @@ test('studio dates and collected evidence survive the report build without imply
 
 test('all source profiles and all original fields are preserved exactly', () => {
   const blocks = [...source.matchAll(/^### (.+)\r?\n([\s\S]*?)(?=^### |^## |$(?![\s\S]))/gm)];
-  assert.equal(blocks.length, 106);
+  assert.equal(blocks.length, 105);
   assert.equal(data.studios.length, blocks.length);
+  assert.ok(data.studios.every(studio => !/bio[\s-]*ware/i.test(studio.name)));
   for (const [, name, body] of blocks) {
     const studio = data.studios.find(studio => studio.name === name.trim());
     assert.ok(studio, `Missing profile: ${name}`);
@@ -107,7 +141,7 @@ test('all source profiles and all original fields are preserved exactly', () => 
 
 test('every documented location has valid coordinates and an embedded country flag', () => {
   const sites = data.studios.flatMap(studio => studio.sites);
-  assert.equal(sites.length, 117);
+  assert.equal(sites.length, 116);
   for (const site of sites) {
     assert.ok(site.lon >= -180 && site.lon <= 180, site.city);
     assert.ok(site.lat >= -90 && site.lat <= 90, site.city);

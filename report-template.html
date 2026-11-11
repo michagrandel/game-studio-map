@@ -110,7 +110,7 @@
   <summary data-i18n="meth.title">Data basis, research limits & offline use</summary>
   <div class="methodology-content">
    <h3 data-i18n="meth.summary.h">Summary of the source document</h3><div id="document-summary"></div>
-   <h3 data-i18n="meth.what.h">What this report shows</h3><p data-i18n="meth.what.p">All 106 studio profiles and every original profile field. Multiple cities named in the same profile get their own map markers but remain one table row. The selection is the document's selection — not a complete directory of all existing game studios. The table shows the full project field, even when several projects are named.</p>
+   <h3 data-i18n="meth.what.h">What this report shows</h3><p data-i18n="meth.what.p">All 105 studio profiles and every original profile field. Multiple cities named in the same profile get their own map markers but remain one table row. The selection is the document's selection — not a complete directory of all existing game studios. The table shows the full project field, even when several projects are named.</p>
    <h3 data-i18n="meth.time.h">Currency and job security</h3><p data-i18n="meth.time.p">The document states no date of collection. Its content has not been validated as current industry research. The four security classes are editorial, keyword-based summaries of the original text, not forecasts or credit ratings. The full original text appears in every profile. The "Independent / private" category may include minority stakes; the full investor field remains authoritative.</p>
    <h3 data-i18n="meth.jobs.h">Job research</h3><p id="research-summary"></p><p data-i18n="meth.jobs.p1">The search covered Technical Art (including shaders and artist pipelines), Technical Animation/Rigging, Art (artists, animation, VFX, and art direction), and Tools Engineering. Pure gameplay or rendering engineering roles without a tools focus are not included. Capture is title-based and may miss titles in other languages and dynamically loaded postings. Open applications alone are not confirmed vacancies. "No matching portal results" applies only to the queried source and the assigned cities; never to all career opportunities of a company.</p><p data-i18n="meth.jobs.p2">For public job APIs, locations are assigned based on the city in the posting. Shared portals and teams may show the same position. Key figures count unique job URLs; each profile view names the actual posting location. Remote options and membership in individual teams must be checked in the posting. No automatic update on opening — external positions may have closed since.</p>
    <h3 data-i18n="meth.links.h">Links and preview images</h3><p data-i18n="meth.links.p1">Website and career targets were assigned editorially; the check status appears in the profile. LinkedIn links are only marked as found on the website when the profile URL actually appeared on the researched page. Other LinkedIn targets are editorial, unconfirmed profile assignments. After relocations or closures they may be invalid. Where no dedicated careers page was found, the link leads to the studio website.</p><p data-i18n-html="meth.links.p2">Available game preview images are embedded Steam store capsules of representative released titles; they do not necessarily illustrate the current project. Image and title link to the respective store page. All image rights belong to the respective rights holders. For some projects and pure support studios, no suitable preview images exist; this is indicated visibly. Country flags are embedded as small images from <a href="https://flagcdn.com" target="_blank" rel="noopener noreferrer">FlagCDN / Flagpedia</a> for reliable offline display.</p>
@@ -160,7 +160,7 @@ const translations = {
     'table.expand':'Expand all','table.collapse':'Collapse all','table.col.studio':'Studio','table.col.genre':'Genre','table.col.country':'Country','table.col.investor':'Investor / Parent Company','table.col.project':'Project per document',
     'table.empty':'No studios found. Please adjust the shared filters.','table.detailsFor':'Details for',
     'meth.title':'Data basis, research limits & offline use','meth.summary.h':'Summary of the source document','meth.what.h':'What this report shows',
-    'meth.what.p':'All 106 studio profiles and every original profile field. Multiple cities named in the same profile get their own map markers but remain one table row. The selection is the document\'s selection — not a complete directory of all existing game studios. The table shows the full project field, even when several projects are named.',
+    'meth.what.p':'All 105 studio profiles and every original profile field. Multiple cities named in the same profile get their own map markers but remain one table row. The selection is the document\'s selection — not a complete directory of all existing game studios. The table shows the full project field, even when several projects are named.',
     'meth.time.h':'Currency and job security',
     'meth.time.p':'Each profile displays a data-collected date, but this date does not mean the information was independently verified. The information was collected with AI and may be inaccurate or outdated. The four security classes are editorial, keyword-based summaries of the original text, not forecasts or credit ratings. The full original text appears in every profile. The "Independent / private" category may include minority stakes; the full investor field remains authoritative.',
     'meth.jobs.h':'Job research',
@@ -216,7 +216,7 @@ const translations = {
     'table.expand':'Alle öffnen','table.collapse':'Alle schließen','table.col.studio':'Studio','table.col.genre':'Genre','table.col.country':'Land','table.col.investor':'Investor / Mutterkonzern','table.col.project':'Projekt laut Dokument',
     'table.empty':'Keine Studios gefunden. Bitte die gemeinsamen Filter anpassen.','table.detailsFor':'Details für',
     'meth.title':'Datenbasis, Recherchegrenzen & Offline-Nutzung','meth.summary.h':'Zusammenfassung des Ausgangsdokuments','meth.what.h':'Was dieser Bericht zeigt',
-    'meth.what.p':'Alle 106 Studio-Profile und sämtliche ursprünglichen Profilfelder. Mehrere im selben Profil genannte Städte erhalten eigene Kartenmarker, bleiben aber eine Tabellenzeile. Die Auswahl ist die Auswahl des Dokuments — kein vollständiges Verzeichnis aller existierenden Game-Studios. Die Tabelle zeigt das vollständige Projektfeld, auch wenn mehrere Projekte genannt sind.',
+    'meth.what.p':'Alle 105 Studio-Profile und sämtliche ursprünglichen Profilfelder. Mehrere im selben Profil genannte Städte erhalten eigene Kartenmarker, bleiben aber eine Tabellenzeile. Die Auswahl ist die Auswahl des Dokuments — kein vollständiges Verzeichnis aller existierenden Game-Studios. Die Tabelle zeigt das vollständige Projektfeld, auch wenn mehrere Projekte genannt sind.',
     'meth.time.h':'Zeitstand und Zukunftssicherheit',
     'meth.time.p':'Jedes Profil zeigt ein Erhebungsdatum, das jedoch keine unabhängige Verifizierung der Angaben bedeutet. Die Informationen wurden mit KI erfasst und können ungenau oder veraltet sein. Die vier Sicherheitsklassen sind redaktionelle, schlagwortbasierte Zusammenfassungen des Originaltextes, keine Prognosen oder Bonitätsbewertungen. Der vollständige Originaltext steht in jedem Profil. Die Kategorie „Unabhängig / privat“ kann Minderheitsbeteiligungen einschließen; maßgeblich bleibt das vollständige Investorenfeld.',
     'meth.jobs.h':'Stellenrecherche',
@@ -294,13 +294,14 @@ function populateCareerOptions() {
     const current = $(selectId).value;
     const group = $(groupId);
     group.label = t('filter.jobs.group');
-    group.replaceChildren(...categories.map(category => new Option(tv(category), category)));
+    const sortedCategories = [...categories].sort((a,b)=>tv(a).localeCompare(tv(b),locale()));
+    group.replaceChildren(...sortedCategories.map(category => new Option(tv(category), category)));
     $(selectId).value = current;
   }
 }
 function populateFilters() {
   populateCareerOptions();
-  populate('continent',DATA.studios.flatMap(studio=>studio.sites.map(site=>site.continent)));
+  populate('continent',Object.values(continentsByView));
   populate('country',DATA.studios.flatMap(studio=>studio.sites.map(site=>site.country)),code=>`${flag(code)} ${countryNames.of(code)}`);
   populate('genre',DATA.studios.flatMap(studio=>studio.genres));
   populate('engine',DATA.studios.flatMap(studio=>studio.engine));

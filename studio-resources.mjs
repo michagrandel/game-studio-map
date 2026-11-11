@@ -33,7 +33,6 @@ export const resources = [
   ['Raven', 'https://www.ravensoftware.com', 'https://careers.ravensoftware.com', 'raven-software'],
   ['King', 'https://www.king.com', 'https://careers.king.com', 'king'],
   ['DICE', 'https://www.dice.se', 'https://www.ea.com/ea-studios/dice/careers', 'dice'],
-  ['BioWare', 'https://www.bioware.com', 'https://www.bioware.com/careers/', 'bioware'],
   ['Respawn', 'https://www.respawn.com', 'https://www.respawn.com/careers', 'respawn-entertainment'],
   ['Motive', 'https://www.ea.com/ea-studios/motive', 'https://www.ea.com/ea-studios/motive/careers', 'motive-studio'],
   ['EA Sports', 'https://www.ea.com/sports', 'https://jobs.ea.com', 'ea-sports'],

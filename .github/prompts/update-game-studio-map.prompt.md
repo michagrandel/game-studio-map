@@ -14,6 +14,7 @@ publishing private workspace data or committing changes.
 2. Enumerate EVERY studio in
    [the encyclopedia](../../game_studios_enzyklop_die.md). Track coverage of all
    eight fields per profile; no sampling or skipping profiles sharing a parent.
+   Respect the editorial BioWare exclusion; never reintroduce it or site variants.
    Research current locations, engines, projects, franchises, genres,
    publishers, ownership/investors, and outlook/layoffs using official studio,
    publisher, investor and game announcements plus reputable dated reporting.

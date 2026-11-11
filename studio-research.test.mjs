@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { collectStudioResearch, officialLinks, pageEvidence, sourceProfiles, studioFields, validateStudioResearch } from './studio-research.mjs';
+import { assertStudioAllowed, collectStudioResearch, officialLinks, pageEvidence, sourceProfiles, studioFields, validateStudioResearch } from './studio-research.mjs';
 
 test('non-AI research covers every profile and every field without changing source values', async () => {
   const source = await readFile(new URL('./game_studios_enzyklop_die.md', import.meta.url), 'utf8');
@@ -11,7 +11,7 @@ test('non-AI research covers every profile and every field without changing sour
     url, body: '<p>Our studio is based in London and developing a new game using Unreal Engine.</p>',
   }));
   validateStudioResearch(result, profiles.map(profile => profile.name));
-  assert.equal(result.studios.length, 106);
+  assert.equal(result.studios.length, 105);
   assert.equal(JSON.stringify(profiles), before);
   assert.ok(result.studios.every(studio => Object.keys(studio.fields).length === 8));
   assert.equal(result.complete, false);
@@ -23,6 +23,14 @@ test('only relevant HTTPS same-origin pages are followed, with a bounded crawl',
   assert.deepEqual(officialLinks(html, 'https://studio.test'), [
     'https://studio.test/about', 'https://studio.test/games', 'https://studio.test/news', 'https://studio.test/company',
   ]);
+});
+
+test('BioWare cannot be reintroduced by source updates', () => {
+  for (const name of ['BioWare', 'Bioware Edmonton', 'Bio Ware', 'Bio-Ware']) {
+    assert.throws(() => assertStudioAllowed(name), /Excluded studio/);
+    assert.throws(() => sourceProfiles(`### ${name}\n`), /Excluded studio/);
+  }
+  assert.doesNotThrow(() => assertStudioAllowed('Respawn Entertainment'));
 });
 
 test('evidence is short, unverified, field-specific and excludes scripts/navigation', () => {

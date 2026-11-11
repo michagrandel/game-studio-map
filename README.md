@@ -10,10 +10,10 @@ Steam artwork, all without a server or external runtime resources.
 
 ## Report contents
 
-- **106 studio profiles** across 20+ publisher groups (PlayStation, Xbox, EA,
+- **105 studio profiles** across 20+ publisher groups (PlayStation, Xbox, EA,
   Ubisoft, Embracer, THQ Nordic, Tencent, Rockstar, Take-Two, Nintendo, Valve,
   CD Projekt Red, Larian, Kojima, Remedy, and many more) plus indie studios
-- **117 locations** with coordinates, country flags, and an interactive world
+- **116 locations** with coordinates, country flags, and an interactive world
   map (Natural Earth data, zoomable and pannable)
 - Per studio: engine, current project, franchise, genre, publisher,
   investor/parent company, and an assessment of future outlook & layoffs
@@ -35,6 +35,10 @@ Steam artwork, all without a server or external runtime resources.
 - The larger shared Career dropdown is centered above the statistic cards.
   Continent buttons remain below the cards. Career filters both views and stays
   synchronized with the sidebar.
+- Career disciplines are sorted alphabetically by their displayed EN/DE labels;
+  All remains the first option.
+- All six continent filters remain selectable even without dataset coverage.
+  Continents without matching studios show empty map/list results, not World results.
 - **Language switch (EN/DE)** in the top bar; the UI language is persisted in
   `localStorage`. Studio profile data itself is in English (the source
   document's language)
@@ -152,6 +156,10 @@ node --test
 ```
 
 ## Maintaining the data
+
+BioWare is excluded by editorial request, regardless of its operating status.
+Both studio source parsers reject its reintroduction, including site-name
+variants. Do not add it during automated or AI-assisted maintenance.
 
 > **Tip for agent users:** this repository ships the agent skill
 > [`update-studio-atlas`](.agents/skills/update-studio-atlas/SKILL.md)

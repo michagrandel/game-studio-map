@@ -18,6 +18,10 @@ is the research cache (jobs, map, flags, artwork).
 
 ## Step 1 — Edit the source document
 
+BioWare is excluded by explicit editorial request. Never re-add it or a
+BioWare site variant, regardless of operating status. Both source parsers
+enforce this exclusion; it is not evidence that the studio has closed.
+
 Every data-maintenance run must review **all studio profiles**, not only the
 requested studio: research locations, engines, projects, ownership, franchises,
 genres, and outlook/layoffs, then update the source with supported findings.

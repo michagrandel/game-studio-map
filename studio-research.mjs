@@ -5,6 +5,10 @@ export const studioFields = [
   'Investor/Parent Company', 'Future Outlook & Layoffs',
 ];
 
+export function assertStudioAllowed(name) {
+  if (/bio[\s-]*ware/i.test(name)) throw new Error(`Excluded studio: ${name}. BioWare is excluded by editorial request; do not reintroduce it.`);
+}
+
 const fieldPatterns = {
   Location: /\b(?:located|based in|headquarters|office|address|studio in)\b/i,
   Engine: /\b(?:unreal|unity|engine|frostbite|decima|northlight|snowdrop)\b/i,
@@ -18,6 +22,7 @@ const fieldPatterns = {
 
 export function sourceProfiles(source) {
   return [...source.matchAll(/^### (.+)\r?\n([\s\S]*?)(?=^### |^## |$(?![\s\S]))/gm)].map(([, name, body]) => {
+    assertStudioAllowed(name);
     const fields = Object.fromEntries([...body.matchAll(/^\* \*\*(.+?):\*\* (.+)$/gm)].map(([, key, value]) => [key, value.trim()]));
     if (Object.keys(fields).join('|') !== studioFields.join('|')) throw new Error(`Invalid fields: ${name}`);
     const resource = resources.find(([prefix]) => name.trim().startsWith(prefix));
