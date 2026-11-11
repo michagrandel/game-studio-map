@@ -1,9 +1,9 @@
 ---
 name: update-studio-atlas
-description: 'Update the Studio Atlas project: add, edit, or remove game studio profiles in game_studios_enzyklop_die.md, register resources in studio-resources.mjs, rebuild game-studio-report.html, and run tests. Use when: adding a studio, updating studio data (project, engine, investor, layoffs), fixing locations, refreshing job listings, or regenerating the report.'
+description: 'Update the Game Studio Map project: add, edit, or remove game studio profiles in game_studios_enzyklop_die.md, register resources in studio-resources.mjs, rebuild game-studio-report.html, and run tests. Use when: adding a studio, updating studio data (project, engine, investor, layoffs), fixing locations, refreshing job listings, or regenerating the report.'
 ---
 
-# Update Studio Atlas
+# Update Game Studio Map
 
 The project builds a self-contained HTML report (`game-studio-report.html`) from
 a Markdown source. Never edit the generated HTML or `report-data.json` by hand —
@@ -18,11 +18,19 @@ is the research cache (jobs, map, flags, artwork).
 
 ## Step 1 — Edit the source document
 
+Every data-maintenance run must review **all studio profiles**, not only the
+requested studio: research locations, engines, projects, ownership, franchises,
+genres, and outlook/layoffs, then update the source with supported findings.
+Update collection dates only for profiles actually researched. Report unavailable
+or uncertain sources explicitly; never advance dates to imply research that was
+not performed. A career scrape alone does not update studio facts.
+
 One profile per studio in `game_studios_enzyklop_die.md`, under a `## N. Group`
 section heading (the heading text becomes the studio's `group`):
 
 ```markdown
 ### Studio Name
+> **Data collected:** YYYY-MM-DD
 * **Location:** City, Country 🇺🇳
 * **Engine:** ...
 * **Current Project:** ...
@@ -35,6 +43,11 @@ section heading (the heading text becomes the studio's `group`):
 
 Hard rules:
 - Exactly these 8 field keys, in this order, format `* **Key:** value`.
+- Keep `> **Data collected:** YYYY-MM-DD` directly under every studio heading.
+  Use the date the studio information was researched or verified, and update it
+  whenever factual information is changed or re-verified; formatting-only edits
+  do not change the date. Existing profiles carry a `2026-11-11` baseline date,
+  which is not confirmation that every profile was re-verified on that date.
 - English prose. Standard English city/country names (Warsaw, Kyiv, Ghent,
   Quebec City, …) — the Location value must start with a key of `cities` in
   `studio-resources.mjs`, or the studio name must have a `locationOverrides`
@@ -64,18 +77,42 @@ In `studio-resources.mjs`:
   fails otherwise.
 - `games` (optional): Steam app IDs for representative released games.
 
+Career posting categories and title-matching rules are maintained in
+`career-categories.mjs`. When changing them, use `--refresh` to recollect and
+reclassify public listings; `--reparse` reuses cached job research.
+
 ## Step 3 — Rebuild
 
-- Text-only edits (source changed, no new studio): `node build-report.mjs --reparse`
-  — offline, carries over cached job research by studio name.
-- New studios or stale job data: `node build-report.mjs --refresh` — needs
-  network, re-scrapes job portals, map, flags, and artwork (takes minutes).
-- `node build-report.mjs` alone only re-renders from cache; it refuses to run
-  when the source changed.
+- **One-command AI-assisted maintenance:** run `/update-game-studio-map` in
+  VS Code Copilot Chat. The workspace prompt requires research of every profile
+  and all eight fields, citations, honest unknowns, career taxonomy review,
+  full refresh and validation. Web research must be available.
+- **One-command non-AI collection:** `node update-all.mjs` crawls public official
+  pages for all profiles, saves short unverified evidence and explicit per-field
+  gaps to `studio-research.json`, refreshes careers/assets, rebuilds the report
+  date, and runs tests. It does NOT verify or replace Markdown studio facts or
+  advance their collection dates. Never describe this as complete factual
+  maintenance. `--collect-only` gathers evidence without changing the report.
+- After AI/human research, add `> **Research sources:**` with raw HTTPS URLs and
+  publication dates, and `> **Review note:**` with unresolved fields, below each
+  profile's eight fields. The report displays these separately from the
+  non-AI evidence. Do not edit the generated evidence cache manually.
+
+- **Every data-maintenance run:** after reviewing all studio facts, run
+  `node build-report.mjs --refresh`. This re-parses every profile and refreshes
+  all career listings, career categories, map, flags, and artwork. Do not use
+  `--reparse` or the cache-only build as a substitute for a full data update.
+- **UI-only changes:** `node build-report.mjs` re-renders from the existing
+  cache. `--reparse` remains an offline development utility, not the maintenance
+  workflow.
+- Each successful build records `updatedAt` for the header's
+  `Last updated: DD.MM.YYYY`. It is the report update date, not proof of new
+  research. Career research keeps its own timestamps; studio collection dates
+  remain in the source.
 
 ## Step 4 — Validate
 
-1. `node --test` must pass (7 tests).
+1. `node --test` must pass.
 2. When adding/removing studios, update hardcoded counts in `report.test.mjs`
    (profile count, site count, flag count) and in the template's
    `meth.what.p` texts (both languages in `translations`).
@@ -84,7 +121,9 @@ In `studio-resources.mjs`:
    translations to `valueNamesDe` in `report-template.html`, and new UI strings
    to BOTH `translations.en` and `translations.de` there.
 4. Spot-check in a browser: open `game-studio-report.html`, toggle EN/DE in the
-   top bar, expand the changed studio's profile.
+   top bar, expand the changed studio's profile, verify the update date and
+   career selectors, and toggle legend entries off and on. Legend toggles affect
+   the map only; the directory and statistic cards retain the shared filters.
 
 ## Do not
 

@@ -1,5 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { resources, cities, locationOverrides, games } from './studio-resources.mjs';
+import { careerCategories, careerCategoryNamesDe, classifyCareerTitle, isCareerJobTitle } from './career-categories.mjs';
+import { validateStudioResearch } from './studio-research.mjs';
 
 const sourceFile = 'game_studios_enzyklop_die.md';
 const cacheFile = 'report-data.json';
@@ -17,7 +19,12 @@ function parseStudios() {
     for (const block of section.split(/^### /m).slice(1)) {
       const [name] = block.split(/\r?\n/);
       const fields = Object.fromEntries([...block.matchAll(/^\* \*\*(.+?):\*\* (.+)$/gm)].map(([, key, value]) => [key, clean(value)]));
-      studios.push(createStudio(name.trim(), group, fields, studios.length));
+      const studio = createStudio(name.trim(), group, fields, studios.length);
+      studio.collectedAt = block.match(/^> \*\*Data collected:\*\* (\d{4}-\d{2}-\d{2})/m)?.[1];
+      studio.factSources = [...block.matchAll(/^> \*\*Research sources:\*\* (.+)$/gm)]
+        .flatMap(([, text]) => [...text.matchAll(/https:\/\/[^\s<>")\]]+/g)].map(match => match[0]));
+      studio.reviewNote = block.match(/^> \*\*Review note:\*\* (.+)$/m)?.[1] || '';
+      studios.push(studio);
     }
   }
   return studios;
@@ -98,7 +105,7 @@ function textContent(html) {
 }
 
 async function request(url, binary = false) {
-  const response = await fetch(url, { signal: AbortSignal.timeout(25000), headers: { 'User-Agent': 'StudioAtlasReport/1.0 (public career research)' } });
+  const response = await fetch(url, { signal: AbortSignal.timeout(25000), headers: { 'User-Agent': 'GameStudioMapReport/1.0 (public career research)' } });
   if (!response.ok) throw new Error(`HTTP ${response.status}: ${url}`);
   return { body: binary ? Buffer.from(await response.arrayBuffer()) : await response.text(), url: response.url, type: response.headers.get('content-type') };
 }
@@ -116,27 +123,23 @@ async function pool(items, action, concurrency = 6) {
   }));
 }
 
-function jobCategory(title) {
-  if (/technical.*animat|tech.*animat|animation.*(engineer|programmer|technical)|rigg(er|ing)/i.test(title)) return 'Technical Animation';
-  if (/technical.*artist|technical.*art\b|tech art|shader artist|pipeline.*(artist|technical director)/i.test(title)) return 'Technical Art';
-  if (/(tool|pipeline).*(engineer|programmer|developer)|(?:engineer|programmer|developer).*tools/i.test(title)) return 'Tools Engineering';
-  if (/\bartist[e]?\b|\barts?\s+(director|lead)|\banimator\b|\banimateur\b|\banimation\s+(director|lead)|\bconcept\s+art|\b3d\s+art|\b2d\s+art|\bvfx\b|\bcharacter art|\benvironment art/i.test(title)) return 'Art';
-  return '';
-}
-
 function isGeneralApplication(title) {
   return /open application|spontaneous|expression of interest|talent pool|initiativbewerbung|candidature (libre|ouverte)|unsolicited/i.test(title);
+}
+
+function isCareerNavigation(title) {
+  return /^(?:(?:all|view|see|browse|explore|our)\s+)?(?:jobs?|careers?|open positions|career opportunities|job openings|join our team|meet the team)$/i.test(title.trim());
 }
 
 function extractJobs(html, base) {
   const jobs = [];
   for (const match of html.matchAll(/<a\b([^>]*?)href=["']([^"']+)["']([^>]*)>([\s\S]*?)<\/a>/gi)) {
     const title = textContent(match[4]) || decode(`${match[1]} ${match[3]}`.match(/(?:aria-label|title)=["']([^"']+)/i)?.[1] || '');
-    if (title.length > 180 || !jobCategory(title) || isGeneralApplication(title) || !/job|career|position|vacanc|recruit|lever\.co|greenhouse|workday|teamtailor/i.test(match[2])) continue;
+    if (title.length > 180 || !isCareerJobTitle(title) || isCareerNavigation(title) || isGeneralApplication(title) || !/job|career|position|vacanc|recruit|lever\.co|greenhouse|workday|teamtailor/i.test(match[2])) continue;
     const url = new URL(decode(match[2]), base).href;
     if (/\/category\/|\/departments\/|[{}]|#/.test(url) || url.replace(/\/$/,'') === base.replace(/\/$/,'')) continue;
     if (/^https?:/.test(url) && !/^(view|see|explore|all|our|meet|learn|read)\b/i.test(title)) {
-      jobs.push({ title: title.replace(/\s+View details$/i,''), url, location: 'Check posting for location', category: jobCategory(title) });
+      jobs.push({ title: title.replace(/\s+View details$/i,''), url, location: 'Check posting for location', category: classifyCareerTitle(title) });
     }
   }
   return jobs;
@@ -264,7 +267,7 @@ async function researchStudio(studio) {
       const sharedSony = board === 'greenhouse:sonyinteractiveentertainmentglobal';
       const ownListings = sharedSony ? listings.filter(job => job.studio && normalize(job.studio).includes(normalize(studio.name.replace(/ \(.*\)/,'')))) : listings;
       if (sharedSony && !ownListings.length) throw new Error('Shared PlayStation portal: no unambiguous studio assignment available.');
-      const relevant = ownListings.filter(job => jobCategory(job.title) && !isGeneralApplication(job.title));
+      const relevant = ownListings.filter(job => isCareerJobTitle(job.title) && !isGeneralApplication(job.title));
       const shared = /Ubisoft|Rockstar|CD Projekt|Mojang|Insomniac|Cloud Chamber|Hangar 13|Larian/.test(studio.name);
       jobs = relevant.filter(job => matchesSite(job, studio) || (!shared && /\bremote\b/i.test(job.location)));
       if (!/Ubisoft/.test(studio.name) && !sharedSony) otherJobs = relevant.filter(job => !jobs.includes(job));
@@ -277,7 +280,7 @@ async function researchStudio(studio) {
         guerrilla: studio.careers,
       };
       boardSource = sources[board.split(':')[0]];
-      if (relevant.length && !jobs.length) errors.push('The portal lists matching roles, but none can be unambiguously assigned to the documented cities.');
+      if (relevant.length && !jobs.length) errors.push('The portal lists positions, but none can be unambiguously assigned to the documented cities.');
       break;
     } catch (error) {
       errors.push(error.message);
@@ -319,10 +322,10 @@ async function researchStudio(studio) {
       }
     }
   }
-  const unique = [...new Map(jobs.filter(job => /^https?:/.test(job.url)).map(job => [job.url, { ...job, category: jobCategory(job.title) }])).values()];
+  const unique = [...new Map(jobs.filter(job => /^https?:/.test(job.url)).map(job => [job.url, { ...job, category: classifyCareerTitle(job.title) }])).values()];
   studio.research = {
     checkedAt, source: boardSource || studio.careers, jobs: unique,
-    otherJobs: otherJobs.map(job => ({ ...job, category: jobCategory(job.title) })),
+    otherJobs: otherJobs.map(job => ({ ...job, category: classifyCareerTitle(job.title) })),
     status: unique.length ? 'Positions found' : complete ? 'No matching portal results' : page ? 'Not fully verifiable' : 'Source unavailable',
     complete, reachable: Boolean(page || complete), errors,
     scope: complete ? 'Public job portal; assignment based on the documented cities. Remote roles may span locations. No guarantee of complete location coverage.' : 'Public careers page checked; dynamic, protected, or external portals may not be fully captured. Location assignment unconfirmed for directly listed HTML postings. No statement about the absence of open positions.',
@@ -395,13 +398,29 @@ if (refresh || reparse) {
     const geography = JSON.parse(body);
     if (geography.type !== 'FeatureCollection') throw new Error('Invalid map dataset');
     await pool(studios, researchStudio);
-    data = { generatedAt: new Date().toISOString(), sourceFile, sourceText: source, studios, geography, artwork: await loadArtwork(studios), flags: await loadFlags(studios) };
+    data = { generatedAt: new Date().toISOString(), sourceFile, sourceText: source, careerCategories, careerCategoryNamesDe, studios, geography, artwork: await loadArtwork(studios), flags: await loadFlags(studios) };
   }
 } else {
   data = JSON.parse(await readFile(cacheFile, 'utf8'));
   if (data.sourceText !== source) throw new Error('Source changed; regenerate using node build-report.mjs --reparse (text-only) or --refresh (full research)');
 }
-for (const studio of data.studios) {
+data.careerCategories = careerCategories;
+data.careerCategoryNamesDe = careerCategoryNamesDe;
+let factsResearch;
+try {
+  factsResearch = JSON.parse(await readFile('studio-research.json', 'utf8'));
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
+if (factsResearch) validateStudioResearch(factsResearch, data.studios.map(studio => studio.name));
+const sourceMetadata = new Map(parseStudios().map(studio => [studio.name, studio]));
+data.updatedAt = new Date().toISOString();
+for (const [index, studio] of data.studios.entries()) {
+  studio.factsResearch = factsResearch?.studios[index];
+  const metadata = sourceMetadata.get(studio.name);
+  studio.collectedAt = metadata.collectedAt;
+  studio.factSources = metadata.factSources;
+  studio.reviewNote = metadata.reviewNote;
   studio.genres = genreCategories(studio.fields.Genre);
   studio.engine = engineCategories(studio.fields.Engine);
   studio.investor = investorCategory(studio.fields['Investor/Parent Company']);
@@ -411,4 +430,4 @@ for (const studio of data.studios) {
 await writeFile(cacheFile, JSON.stringify(data));
 const template = await readFile('report-template.html', 'utf8');
 await writeFile('game-studio-report.html', template.replace('/*__REPORT_DATA__*/', JSON.stringify(data).replace(/</g, '\\u003c')));
-console.log(`Built game-studio-report.html: ${data.studios.length} profiles, ${data.studios.reduce((sum, studio) => sum + studio.sites.length, 0)} locations, ${data.studios.reduce((sum, studio) => sum + studio.research.jobs.length, 0)} relevant job associations.`);
+console.log(`Built game-studio-report.html: ${data.studios.length} profiles, ${data.studios.reduce((sum, studio) => sum + studio.sites.length, 0)} locations, ${data.studios.reduce((sum, studio) => sum + studio.research.jobs.length, 0)} job postings.`);
