@@ -6,6 +6,8 @@ is compiled into a self-contained HTML page ([game-studio-report.html](game-stud
 — with a world map, filter panel, studio profiles, researched job listings, and
 Steam artwork, all without a server or external runtime resources.
 
+<p style="text-align:center"><img src="./preview/screenshot.png" width="650"></p>
+
 ## Report contents
 
 - **106 studio profiles** across 20+ publisher groups (PlayStation, Xbox, EA,
