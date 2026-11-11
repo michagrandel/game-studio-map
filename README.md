@@ -46,6 +46,10 @@ Steam artwork, all without a server or external runtime resources.
 
 ## Usage
 
+Open the finished report by double-clicking `game-studio-report.html`.
+
+## Rebuild and Tests
+
 Rebuild the report from the cache (fast, offline):
 
 ```powershell
@@ -71,8 +75,6 @@ Run the tests:
 ```powershell
 node --test
 ```
-
-Open the finished report by double-clicking `game-studio-report.html`.
 
 ## Maintaining the data
 
