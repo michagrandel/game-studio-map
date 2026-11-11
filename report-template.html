@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Interactive, offline-capable atlas of the game studios from the Game Studios Encyclopedia.">
+<title>Studio Atlas — Game Studios & Careers</title>
+<style>
+:root{--bg:#0b0f17;--panel:#111824;--panel2:#161f2e;--line:#263247;--muted:#9baac0;--text:#eaf0fa;--accent:#a9f27d;--blue:#79b9ff;--radius:16px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button,a,input,select,summary{-webkit-tap-highlight-color:transparent}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}button,select{cursor:pointer}button{border:1px solid var(--line);border-radius:8px;color:var(--text);background:var(--panel2);padding:7px 12px}button:hover{border-color:var(--accent);background:#233044}button:disabled{opacity:.4;cursor:default}button.active{background:#a9f27d18;border-color:#a9f27670;color:var(--accent)}:focus-visible{outline:2px solid var(--accent);outline-offset:3px}input,select{width:100%;border:1px solid var(--line);color:var(--text);background:#0d1420;border-radius:8px;padding:10px 11px}select{max-width:100%}input::placeholder{color:#7b8ba3}h1,h2,h3,p{margin:0}h1{font-size:clamp(29px,3.8vw,48px);font-weight:650;letter-spacing:-1.7px;line-height:1.15}h2{font-size:18px;font-weight:600;letter-spacing:-.3px}h3{font-size:16px}.muted{color:var(--muted)}.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:2px;font-weight:700;color:var(--accent)}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#172131;color:#c7d4e5;border-radius:5px;font-size:11px;padding:3px 7px;max-width:100%}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0}.topbar{height:66px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:0 30px;background:#0d131e}.brand{display:flex;align-items:center;gap:12px;font-size:16px;letter-spacing:2px;font-weight:700}.brand-icon{width:30px;height:30px;border:1px solid var(--accent);border-radius:8px;display:grid;place-items:center;color:var(--accent);font-size:21px}.toplinks{display:flex;gap:22px;align-items:center;font-size:12px}.app{display:grid;grid-template-columns:258px minmax(0,1fr);max-width:1920px;margin:auto}.sidebar{padding:27px 22px;border-right:1px solid var(--line);background:#0e1520}.sidebar-inner{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-y:auto;scrollbar-width:thin}.sidebar-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.sidebar-title button{font-size:11px;padding:4px 7px;color:var(--muted)}.filter{display:block;margin-bottom:17px}.filter>span{display:block;color:#aab8ca;font-size:11px;letter-spacing:.6px;margin-bottom:6px}.filter-foot{padding-top:18px;border-top:1px solid var(--line);font-size:11px;line-height:1.7;color:var(--muted)}.filter-foot strong{color:var(--text)}main{min-width:0;padding:32px 32px 20px}.intro{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:24px}.intro p{max-width:650px;color:var(--muted);margin-top:12px;font-size:13px}.intro-badge{white-space:nowrap;margin-bottom:5px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:24px}.stat{padding:15px 20px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(120deg,#19233390,#101722)}.stat-value{font-size:28px;line-height:1.2;font-weight:650;letter-spacing:-.7px}.stat-label{color:var(--muted);font-size:11px;margin-top:5px}.stat-value small{font-size:13px;font-weight:400;color:var(--muted)}.panel{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);overflow:hidden}.panel-head{padding:17px 20px;display:flex;justify-content:space-between;align-items:center;gap:15px;border-bottom:1px solid var(--line)}.panel-head p{font-size:11px;color:var(--muted);margin-top:3px}.map-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.map-actions button{font-size:11px}.color-control{display:flex;gap:8px;align-items:center;font-size:11px;color:var(--muted)}.color-control select{width:180px;padding:6px 9px;font-size:12px}.map-wrap{position:relative;background:radial-gradient(ellipse at 40% 40%,#142436,#0c1421 70%);height:510px;overflow:hidden}.map-wrap svg{width:100%;height:100%;touch-action:none;cursor:grab;display:block}.map-wrap svg.dragging{cursor:grabbing}.land{fill:#202f40;stroke:#354458;stroke-width:.7;vector-effect:non-scaling-stroke}.graticule{stroke:#24344a;stroke-width:.65;fill:none;vector-effect:non-scaling-stroke;opacity:.5}.marker{cursor:pointer;outline:none}.marker .core{stroke:#0a101b;stroke-width:1.4;vector-effect:non-scaling-stroke;transition:opacity .15s}.marker:hover .core,.marker:focus .core{stroke:white;stroke-width:2}.marker .halo{opacity:.15}.map-label{font-size:10px;letter-spacing:2px;fill:#73889f;pointer-events:none}.map-navigation{position:absolute;bottom:18px;right:18px;display:flex;flex-direction:column;gap:5px}.map-navigation button{width:34px;height:32px;padding:0;background:#111b2be6;font-size:18px}.map-hint{position:absolute;left:18px;bottom:15px;font-size:10px;color:#8598ae;pointer-events:none;background:#0a111bd9;padding:5px 8px;border-radius:6px}.map-empty{position:absolute;inset:30% 20%;text-align:center;pointer-events:none;color:var(--muted)}.legend{padding:12px 19px;display:flex;gap:9px 16px;flex-wrap:wrap;background:#101722;font-size:10px;color:#bac7d9;border-top:1px solid var(--line)}.legend-item{display:flex;gap:6px;align-items:center}.legend-item .dot{width:8px;height:8px}.map-credit{display:flex;justify-content:space-between;padding:7px 18px;font-size:10px;color:#8393a9;background:#0e1520}.table-panel{margin-top:24px}.table-toolbar{display:flex;align-items:center;gap:10px;font-size:11px}.table-toolbar select{width:170px;padding:6px 8px;font-size:11px}.table-scroll{overflow:auto}table{border-collapse:collapse;width:100%;text-align:left}th{font-size:10px;color:#91a1b7;text-transform:uppercase;letter-spacing:.7px;font-weight:500;white-space:nowrap;background:#101722;padding:12px 15px;border-bottom:1px solid var(--line)}td{padding:12px 15px;border-bottom:1px solid #22304480;font-size:12px;vertical-align:middle}.studio-row:hover{background:#192437}.studio-row.is-open{background:#1b2a3c}.studio-name{font-weight:600;color:#edf3ff;display:flex;align-items:center;gap:9px;min-width:220px}.expand-button{padding:0;width:25px;height:25px;flex-shrink:0;line-height:1;font-size:16px;border:0;background:#26344a}.studio-group{font-size:10px;color:var(--muted);margin-left:34px;margin-top:2px}.genre-cell{max-width:200px;font-size:11px}.country-cell{white-space:nowrap}.project-cell{max-width:280px}.detail-row>td{padding:0;background:#0d1521}.detail-inner{padding:24px}.profile-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:12px}.profile-heading h3{font-size:21px;letter-spacing:-.6px}.profile-location{color:var(--muted);font-size:12px;margin-top:4px}.profile-tags{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 16px}.profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 22px;margin-bottom:18px}.profile-grid dt{color:#8297b0;font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}.profile-grid dd{margin:0;font-size:12px;overflow-wrap:anywhere}.profile-grid .wide{grid-column:1/-1}.source-label{font-size:10px;color:#889bb2}.link-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:17px}.link-bar a{border:1px solid var(--line);border-radius:7px;padding:6px 10px;font-size:11px;color:#b9d7ff;background:#172335}.game-strip{display:flex;gap:10px;overflow-x:auto;margin:15px 0}.game-card{width:156px;flex:0 0 156px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#192333}.game-card img{width:100%;height:59px;object-fit:cover;display:block}.game-card span{display:block;padding:6px 8px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.no-art{font-size:11px;color:var(--muted);padding:10px 0}.career-head{display:flex;gap:10px;justify-content:space-between;align-items:center;margin:15px 0 8px}.career-head h4{margin:0;font-size:13px}.career-note{font-size:10px;color:#92a4bc;line-height:1.7;margin-top:9px}.jobs-table th{padding:7px 9px;font-size:9px}.jobs-table td{padding:8px 9px;font-size:11px}.jobs-table td:first-child{width:130px}.job-status{font-size:10px;color:var(--muted)}.tooltip{position:fixed;z-index:20;width:530px;max-width:calc(100vw - 24px);max-height:min(760px,85vh);overflow-y:auto;border:1px solid #4d6582;border-radius:14px;background:#111b2afc;box-shadow:0 24px 80px #000b;padding:21px;scrollbar-width:thin}.tooltip[hidden]{display:none}.tooltip .profile-grid{gap:10px 15px}.tooltip .profile-heading h3{font-size:18px}.tooltip-close{padding:2px 8px;font-size:16px;float:right;margin-left:10px;position:sticky;top:0;z-index:1}.tooltip-pin{font-size:9px;color:var(--accent);margin-bottom:10px}.empty{text-align:center;padding:35px;color:var(--muted)}.notice{margin:18px 0 22px;padding:12px 15px;border-left:2px solid #c5a16b;background:#c5a16b0a;color:#c4b8a7;font-size:11px;border-radius:0 8px 8px 0}.methodology{margin:24px 0 12px;border:1px solid var(--line);border-radius:12px;padding:15px 20px;background:#101722}.methodology summary{cursor:pointer;color:#c6d3e4;font-size:12px;font-weight:600}.methodology-content{margin-top:16px;max-width:950px;color:var(--muted);font-size:12px}.methodology-content h3{color:#c6d3e4;font-size:13px;margin:17px 0 6px}.methodology-content p,.methodology-content li{margin:6px 0}.footer{display:flex;justify-content:space-between;font-size:10px;color:#8091a8;padding:15px 0;gap:12px}.mobile-filters{display:none}.sr-only{position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden}.mini-count{font-variant-numeric:tabular-nums;color:var(--accent)}.source-document{white-space:pre-wrap;max-height:450px;overflow:auto;background:#0b111c;border:1px solid var(--line);padding:18px;font-size:11px;color:#a7b6c8}.source-document a{color:inherit}noscript{display:block;background:#5b261c;padding:20px}.hint-key{font-family:monospace;font-size:10px}
+@media(min-width:1650px){main{padding:35px 45px}.map-wrap{height:590px}}
+.country-flag{width:20px;height:14px;object-fit:cover;vertical-align:-2px;border-radius:2px;box-shadow:0 0 0 1px #ffffff20;margin-right:3px}
+.marker .halo{pointer-events:none}.marker-leader{stroke:#697d96;stroke-width:.7;opacity:.5;fill:none;pointer-events:none;vector-effect:non-scaling-stroke}
+@media(max-width:1100px){.app{grid-template-columns:220px minmax(0,1fr)}main{padding:25px 20px}.sidebar{padding:24px 15px}.intro-badge{display:none}.panel-head{align-items:flex-start;flex-wrap:wrap}.map-wrap{height:440px}.stats{gap:8px}.stat{padding:12px}.stat-value{font-size:24px}.toplinks .offline-label{display:none}}
+@media(max-width:760px){.topbar{padding:0 18px;height:58px}.toplinks{gap:12px}.app{display:block}.sidebar{display:none;border-right:0;border-bottom:1px solid var(--line);padding:20px}.sidebar.show{display:block}.sidebar-inner{position:static;max-height:none;display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.sidebar-title,.filter-foot{grid-column:1/-1}.mobile-filters{display:inline-block}.brand{font-size:13px}.toplinks a{font-size:11px}main{padding:25px 14px}.intro{margin-bottom:18px}h1{font-size:34px}.stats{grid-template-columns:1fr 1fr;margin-bottom:18px}.stat{padding:12px 16px}.stat-value{font-size:25px}.panel-head{padding:14px}.color-control{width:100%;justify-content:space-between}.color-control select{width:180px}.map-wrap{height:370px}.map-hint{max-width:70%;font-size:9px}.map-credit{flex-wrap:wrap}.table-toolbar{width:100%;justify-content:space-between}.profile-grid{grid-template-columns:1fr}.profile-grid .wide{grid-column:auto}.tooltip{left:12px!important;top:8vh!important;max-height:84vh;padding:17px}.detail-inner{padding:18px}.footer{flex-wrap:wrap}.toplinks .offline-label{display:none}.map-actions{gap:4px}.map-actions button{padding:6px 8px}.notice{font-size:10px}.game-card{width:140px;flex-basis:140px}}
+@media(max-width:760px){.brand>.pill{display:none}.brand{white-space:nowrap;letter-spacing:1px;gap:8px;font-size:12px}.mobile-filters{margin-bottom:12px}.toplinks a{font-size:10px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{.topbar,.sidebar,.map-actions,.map-navigation,.map-hint,.tooltip,.table-toolbar,.expand-button{display:none!important}.app{display:block}main{padding:0}.map-wrap{height:350px}.detail-row[hidden]{display:none}.panel{break-inside:avoid}body{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+.lang-switch{display:flex;gap:4px;margin-left:8px}.lang-switch button{font-size:11px;padding:4px 9px}
+</style>
+</head>
+<body>
+<noscript>This interactive report requires JavaScript. All data, maps, and available preview images are embedded in this file.</noscript>
+<header class="topbar">
+  <div class="brand"><span class="brand-icon" aria-hidden="true">⌖</span> STUDIO ATLAS <span class="pill">INDUSTRY EXPLORER</span></div>
+  <nav class="toplinks" data-i18n-aria="nav.sections" aria-label="Report sections"><span class="offline-label muted"><span class="dot"></span> <span data-i18n="nav.offline">Works offline</span></span><a href="#studio-list" data-i18n="nav.directory">Studio directory</a><a href="#methodology" data-i18n="nav.data">Data & sources</a><span class="lang-switch" role="group" aria-label="Language / Sprache"><button id="lang-en" type="button">EN</button><button id="lang-de" type="button">DE</button></span></nav>
+</header>
+<div class="app">
+<aside class="sidebar" id="sidebar" data-i18n-aria="sidebar.aria" aria-label="Shared filters for map and table">
+ <div class="sidebar-inner">
+  <div class="sidebar-title"><h2 data-i18n="filter.title">Filter</h2><button id="reset" data-i18n="filter.reset">Reset</button></div>
+  <label class="filter"><span data-i18n="filter.search">STUDIO OR PROJECT</span><input id="search" type="search" data-i18n-placeholder="filter.search.ph" placeholder="e.g. Remedy, Gothic …" autocomplete="off"></label>
+  <label class="filter"><span data-i18n="filter.continent">CONTINENT</span><select id="continent"><option value="" data-i18n="filter.continent.all">All continents</option></select></label>
+  <label class="filter"><span data-i18n="filter.country">COUNTRY</span><select id="country"><option value="" data-i18n="filter.country.all">All countries</option></select></label>
+  <label class="filter"><span data-i18n="filter.genre">GENRE</span><select id="genre"><option value="" data-i18n="filter.genre.all">All genres</option></select></label>
+  <label class="filter"><span data-i18n="filter.engine">ENGINE FAMILY</span><select id="engine"><option value="" data-i18n="filter.engine.all">All engines</option></select></label>
+  <label class="filter"><span data-i18n="filter.stability">JOB SECURITY *</span><select id="stability"><option value="" data-i18n="filter.stability.all">All assessments</option></select></label>
+  <label class="filter"><span data-i18n="filter.investor">INVESTOR / PARENT COMPANY</span><select id="investor"><option value="" data-i18n="filter.investor.all">All investors</option></select></label>
+  <label class="filter"><span data-i18n="filter.publisher">PUBLISHER</span><select id="publisher"><option value="" data-i18n="filter.publisher.all">All publishers</option></select></label>
+  <label class="filter"><span data-i18n="filter.jobs">CAREERS / DISCIPLINE</span><select id="jobs"><option value="" data-i18n="filter.jobs.all">All career statuses</option><option value="Technical Art" data-i18n="filter.jobs.ta">Technical Art: hits</option><option value="Technical Animation" data-i18n="filter.jobs.tanim">Technical Animation: hits</option><option value="Art" data-i18n="filter.jobs.art">Art: hits</option><option value="Tools Engineering" data-i18n="filter.jobs.tools">Tools Engineering: hits</option><option value="any" data-i18n="filter.jobs.any">Any relevant positions: hits</option><option value="none" data-i18n="filter.jobs.none">No matching portal results</option><option value="unknown" data-i18n="filter.jobs.unknown">Not fully verifiable</option></select></label>
+  <div class="filter-foot"><strong id="filter-total"></strong><br><span data-i18n="filter.foot">Filters apply jointly to map, key figures, and list. Studios assigned to multiple genres and engines are fully considered.</span><br><br><span data-i18n="filter.footnote">* Assessments from the source document; no current financial or job guarantee.</span></div>
+ </div>
+</aside>
+<main>
+ <section class="intro">
+  <div><div class="eyebrow" data-i18n="intro.eyebrow">Game development · global overview</div><h1 data-i18n-html="intro.headline">Discover studios.<br><span style="color:var(--accent)">Find perspectives.</span></h1><p data-i18n="intro.text">An interactive guide through publisher networks, technologies, and career sources — based on the Game Studios Encyclopedia.</p></div>
+  <span class="pill intro-badge"><span class="dot"></span> <span id="snapshot-date"></span></span>
+ </section>
+ <button class="mobile-filters" id="mobile-filters" aria-expanded="false" aria-controls="sidebar" data-i18n="filter.show">Show filters</button>
+ <section class="stats" data-i18n-aria="stats.aria" aria-label="Key figures of the filtered selection">
+  <div class="stat"><div class="stat-value" id="stat-studios">—</div><div class="stat-label" data-i18n="stats.studios">Studio profiles · filtered</div></div>
+  <div class="stat"><div class="stat-value" id="stat-countries">—</div><div class="stat-label" data-i18n="stats.countries">Countries in selection</div></div>
+  <div class="stat"><div class="stat-value" id="stat-tech">—</div><div class="stat-label" data-i18n="stats.tech">Studios with Technical Art hits</div></div>
+  <div class="stat"><div class="stat-value" id="stat-jobs">—</div><div class="stat-label" data-i18n="stats.jobs">Unique relevant job links</div></div>
+ </section>
+ <section class="panel" aria-labelledby="map-title">
+  <div class="panel-head"><div><h2 id="map-title" data-i18n="map.title">The studio map</h2><p id="map-subtitle">Locations and technologies at a glance</p></div><label class="color-control"><span data-i18n="map.color">Color mode</span> <select id="color-mode"><option value="genre" data-i18n="map.color.genre">Genre</option><option value="engine" data-i18n="map.color.engine">Engine</option><option value="stability" data-i18n="map.color.stability">Job security *</option><option value="investor" data-i18n="map.color.investor">Investor</option><option value="jobs" data-i18n="map.color.jobs">Career status</option><option value="Technical Art">Technical Art</option><option value="Technical Animation">Technical Animation</option><option value="Art">Art</option><option value="Tools Engineering">Tools Engineering</option></select></label></div>
+  <div class="panel-head" style="padding:10px 17px"><div class="map-actions" id="map-presets"><button data-view="world" class="active" data-i18n="map.view.world">World</button><button data-view="europe" data-i18n="map.view.europe">Europe</button><button data-view="asia" data-i18n="map.view.asia">Asia</button><button data-view="northamerica" data-i18n="map.view.northamerica">North America</button><button data-view="southamerica" data-i18n="map.view.southamerica">South America</button><button data-view="africa" data-i18n="map.view.africa">Africa</button><button data-view="oceania" data-i18n="map.view.oceania">Oceania</button></div><div class="map-actions"><button id="tech-preset" data-i18n="map.tech">Technical Art jobs ↗</button><button id="fit-map" data-i18n="map.fit">Fit selection</button></div></div>
+  <div class="map-wrap" id="map-wrap">
+   <svg id="map" viewBox="0 0 1200 600" role="group" data-i18n-aria="map.aria" aria-label="Interactive world map with studio markers. Select markers with Tab, open profile with Enter. Plus and minus zoom, arrow keys pan." tabindex="0"><g id="grid"></g><g id="land"></g><g id="map-labels"></g><g id="markers"></g></svg>
+   <div class="map-empty" id="map-empty" hidden data-i18n-html="map.empty">No locations for this filter combination.<br>Reset filters or widen the selection.</div>
+   <div class="map-hint" data-i18n="map.hint">Hover: profile · Click: pin · Drag: pan · Wheel: zoom</div>
+   <div class="map-navigation"><button id="zoom-in" data-i18n-aria="map.zoom.in" aria-label="Zoom in">+</button><button id="zoom-out" data-i18n-aria="map.zoom.out" aria-label="Zoom out">−</button><button id="home-map" data-i18n-aria="map.zoom.home" aria-label="Restore world view">⌂</button></div>
+  </div>
+  <div class="legend" id="legend" data-i18n-aria="map.legend.aria" aria-label="Color legend"></div>
+  <div class="map-credit"><span data-i18n="map.credit">Natural Earth · Public Domain · city centers with selection offset, not office addresses</span><span id="location-count"></span></div>
+ </section>
+ <div class="notice" data-i18n-html="notice"><strong>Read with a critical eye.</strong> Projects, owners, and security assessments come unchanged from an undated document and may be outdated. Only the career sources were checked separately. "Not fully verifiable" explicitly does not mean "no jobs".</div>
+ <section class="panel table-panel" id="studio-list" aria-labelledby="table-title">
+  <div class="panel-head"><div><h2 id="table-title"><span data-i18n="table.title">Studio directory</span> <span class="mini-count" id="table-count"></span></h2><p data-i18n="table.subtitle">One profile per document entry · expand for all details</p></div><div class="table-toolbar"><label for="sort" data-i18n="table.sort">Sort by</label><select id="sort"><option value="name" data-i18n="table.sort.name">Studio A–Z</option><option value="investor" data-i18n="table.sort.investor">Investor A–Z</option><option value="country" data-i18n="table.sort.country">Country A–Z</option><option value="jobs" data-i18n="table.sort.jobs">Most positions first</option></select><button id="expand-all" data-i18n="table.expand">Expand all</button></div></div>
+  <div class="table-scroll"><table id="studio-table"><thead><tr><th scope="col" data-i18n="table.col.studio">Studio</th><th scope="col" data-i18n="table.col.genre">Genre</th><th scope="col" data-i18n="table.col.country">Country</th><th scope="col" data-i18n="table.col.investor">Investor / Parent Company</th><th scope="col" data-i18n="table.col.project">Project per document</th></tr></thead><tbody id="studio-rows"></tbody></table></div>
+  <div class="empty" id="table-empty" hidden data-i18n="table.empty">No studios found. Please adjust the shared filters.</div>
+ </section>
+ <details class="methodology" id="methodology">
+  <summary data-i18n="meth.title">Data basis, research limits & offline use</summary>
+  <div class="methodology-content">
+   <h3 data-i18n="meth.summary.h">Summary of the source document</h3><div id="document-summary"></div>
+   <h3 data-i18n="meth.what.h">What this report shows</h3><p data-i18n="meth.what.p">All 106 studio profiles and every original profile field. Multiple cities named in the same profile get their own map markers but remain one table row. The selection is the document's selection — not a complete directory of all existing game studios. The table shows the full project field, even when several projects are named.</p>
+   <h3 data-i18n="meth.time.h">Currency and job security</h3><p data-i18n="meth.time.p">The document states no date of collection. Its content has not been validated as current industry research. The four security classes are editorial, keyword-based summaries of the original text, not forecasts or credit ratings. The full original text appears in every profile. The "Independent / private" category may include minority stakes; the full investor field remains authoritative.</p>
+   <h3 data-i18n="meth.jobs.h">Job research</h3><p id="research-summary"></p><p data-i18n="meth.jobs.p1">The search covered Technical Art (including shaders and artist pipelines), Technical Animation/Rigging, Art (artists, animation, VFX, and art direction), and Tools Engineering. Pure gameplay or rendering engineering roles without a tools focus are not included. Capture is title-based and may miss titles in other languages and dynamically loaded postings. Open applications alone are not confirmed vacancies. "No matching portal results" applies only to the queried source and the assigned cities; never to all career opportunities of a company.</p><p data-i18n="meth.jobs.p2">For public job APIs, locations are assigned based on the city in the posting. Shared portals and teams may show the same position. Key figures count unique job URLs; each profile view names the actual posting location. Remote options and membership in individual teams must be checked in the posting. No automatic update on opening — external positions may have closed since.</p>
+   <h3 data-i18n="meth.links.h">Links and preview images</h3><p data-i18n="meth.links.p1">Website and career targets were assigned editorially; the check status appears in the profile. LinkedIn links are only marked as found on the website when the profile URL actually appeared on the researched page. Other LinkedIn targets are editorial, unconfirmed profile assignments. After relocations or closures they may be invalid. Where no dedicated careers page was found, the link leads to the studio website.</p><p data-i18n-html="meth.links.p2">Available game preview images are embedded Steam store capsules of representative released titles; they do not necessarily illustrate the current project. Image and title link to the respective store page. All image rights belong to the respective rights holders. For some projects and pure support studios, no suitable preview images exist; this is indicated visibly. Country flags are embedded as small images from <a href="https://flagcdn.com" target="_blank" rel="noopener noreferrer">FlagCDN / Flagpedia</a> for reliable offline display.</p>
+   <h3 data-i18n="meth.map.h">Map, filters, and colors</h3><p data-i18n="meth.map.p">The map uses Natural Earth 1:110m (public domain), a simplified geographic representation with no statement on border claims. Locations are based on approximate city centers; for Re-Logic only the Indiana region. In densely covered regions, markers are spread apart for selection; fine connecting lines point to the original city center. Zooming reduces the geographic offset. Continent buttons only change the map section, not the filters. For a filtered continent list, use the continent filter. For multi-location profiles, country and continent filters are applied to the same location. Genre, engine, and investor colors show the first normalized category. Filters consider all assigned genres and engines as well as Tencent minority stakes explicitly mentioned in the investor field; unmentioned stakes are not added.</p>
+   <h3 data-i18n="meth.file.h">One file, no runtime dependencies</h3><p data-i18n="meth.file.p">The complete geometry, all data, available preview images, styles, and scripts are embedded in this HTML. Internet is only required for outgoing links. No analytics scripts, cookies, map APIs, or external fonts. "Reset" clears all filters; color selection and map view are preserved.</p>
+   <details><summary data-i18n="meth.source">Show full source document</summary><pre class="source-document" id="source-document"></pre></details>
+  </div>
+ </details>
+ <footer class="footer"><span data-i18n="footer.brand">STUDIO ATLAS / Document-based industry atlas</span><span id="footer-date"></span></footer>
+</main>
+</div>
+<section class="tooltip" id="tooltip" role="dialog" data-i18n-aria="tooltip.aria" aria-label="Studio details" hidden><button class="tooltip-close" id="tooltip-close" data-i18n-aria="tooltip.close" aria-label="Close profile">×</button><div class="tooltip-pin" id="tooltip-pin"></div><div id="tooltip-content"></div></section>
+<div class="sr-only" role="status" aria-live="polite" id="results-announcement"></div>
+<script id="report-data" type="application/json">/*__REPORT_DATA__*/</script>
+<script>
+'use strict';
+const DATA = JSON.parse(document.getElementById('report-data').textContent);
+const $ = id => document.getElementById(id);
+const escapeHtml = text => String(text ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const normalize = text => text.normalize('NFKD').replace(/\p{M}/gu,'').toLowerCase();
+let lang = ['en','de'].includes(localStorage.getItem('atlas-lang')) ? localStorage.getItem('atlas-lang') : 'en';
+let countryNames = new Intl.DisplayNames([lang], {type:'region'});
+const categories = ['Technical Art','Technical Animation','Art','Tools Engineering'];
+const filterIds = ['continent','country','genre','engine','stability','investor','publisher','jobs'];
+const translations = {
+  en: {
+    'nav.sections':'Report sections','nav.offline':'Works offline','nav.directory':'Studio directory','nav.data':'Data & sources',
+    'sidebar.aria':'Shared filters for map and table','filter.title':'Filter','filter.reset':'Reset','filter.search':'STUDIO OR PROJECT','filter.search.ph':'e.g. Remedy, Gothic …',
+    'filter.continent':'CONTINENT','filter.continent.all':'All continents','filter.country':'COUNTRY','filter.country.all':'All countries',
+    'filter.genre':'GENRE','filter.genre.all':'All genres','filter.engine':'ENGINE FAMILY','filter.engine.all':'All engines',
+    'filter.stability':'JOB SECURITY *','filter.stability.all':'All assessments','filter.investor':'INVESTOR / PARENT COMPANY','filter.investor.all':'All investors',
+    'filter.publisher':'PUBLISHER','filter.publisher.all':'All publishers','filter.jobs':'CAREERS / DISCIPLINE','filter.jobs.all':'All career statuses',
+    'filter.jobs.ta':'Technical Art: hits','filter.jobs.tanim':'Technical Animation: hits','filter.jobs.art':'Art: hits','filter.jobs.tools':'Tools Engineering: hits',
+    'filter.jobs.any':'Any relevant positions: hits','filter.jobs.none':'No matching portal results','filter.jobs.unknown':'Not fully verifiable',
+    'filter.foot':'Filters apply jointly to map, key figures, and list. Studios assigned to multiple genres and engines are fully considered.',
+    'filter.footnote':'* Assessments from the source document; no current financial or job guarantee.','filter.show':'Show filters','filter.hide':'Hide filters',
+    'stats.aria':'Key figures of the filtered selection','stats.studios':'Studio profiles · filtered','stats.countries':'Countries in selection','stats.tech':'Studios with Technical Art hits','stats.jobs':'Unique relevant job links',
+    'intro.eyebrow':'Game development · global overview','intro.headline':'Discover studios.<br><span style="color:var(--accent)">Find perspectives.</span>','intro.text':'An interactive guide through publisher networks, technologies, and career sources — based on the Game Studios Encyclopedia.',
+    'map.title':'The studio map','map.color':'Color mode','map.color.genre':'Genre','map.color.engine':'Engine','map.color.stability':'Job security *','map.color.investor':'Investor','map.color.jobs':'Career status',
+    'map.view.world':'World','map.view.europe':'Europe','map.view.asia':'Asia','map.view.northamerica':'North America','map.view.southamerica':'South America','map.view.africa':'Africa','map.view.oceania':'Oceania',
+    'map.tech':'Technical Art jobs ↗','map.fit':'Fit selection','map.aria':'Interactive world map with studio markers. Select markers with Tab, open profile with Enter. Plus and minus zoom, arrow keys pan.',
+    'map.hint':'Hover: profile · Click: pin · Drag: pan · Wheel: zoom','map.zoom.in':'Zoom in','map.zoom.out':'Zoom out','map.zoom.home':'Restore world view','map.legend.aria':'Color legend',
+    'map.credit':'Natural Earth · Public Domain · city centers with selection offset, not office addresses',
+    'map.empty':'No locations for this filter combination.<br>Reset filters or widen the selection.',
+    'notice':'<strong>Read with a critical eye.</strong> Projects, owners, and security assessments come unchanged from an undated document and may be outdated. Only the career sources were checked separately. "Not fully verifiable" explicitly does not mean "no jobs".',
+    'table.title':'Studio directory','table.subtitle':'One profile per document entry · expand for all details','table.sort':'Sort by','table.sort.name':'Studio A–Z','table.sort.investor':'Investor A–Z','table.sort.country':'Country A–Z','table.sort.jobs':'Most positions first',
+    'table.expand':'Expand all','table.collapse':'Collapse all','table.col.studio':'Studio','table.col.genre':'Genre','table.col.country':'Country','table.col.investor':'Investor / Parent Company','table.col.project':'Project per document',
+    'table.empty':'No studios found. Please adjust the shared filters.','table.detailsFor':'Details for',
+    'meth.title':'Data basis, research limits & offline use','meth.summary.h':'Summary of the source document','meth.what.h':'What this report shows',
+    'meth.what.p':'All 106 studio profiles and every original profile field. Multiple cities named in the same profile get their own map markers but remain one table row. The selection is the document\'s selection — not a complete directory of all existing game studios. The table shows the full project field, even when several projects are named.',
+    'meth.time.h':'Currency and job security',
+    'meth.time.p':'The document states no date of collection. Its content has not been validated as current industry research. The four security classes are editorial, keyword-based summaries of the original text, not forecasts or credit ratings. The full original text appears in every profile. The "Independent / private" category may include minority stakes; the full investor field remains authoritative.',
+    'meth.jobs.h':'Job research',
+    'meth.jobs.p1':'The search covered Technical Art (including shaders and artist pipelines), Technical Animation/Rigging, Art (artists, animation, VFX, and art direction), and Tools Engineering. Pure gameplay or rendering engineering roles without a tools focus are not included. Capture is title-based and may miss titles in other languages and dynamically loaded postings. Open applications alone are not confirmed vacancies. "No matching portal results" applies only to the queried source and the assigned cities; never to all career opportunities of a company.',
+    'meth.jobs.p2':'For public job APIs, locations are assigned based on the city in the posting. Shared portals and teams may show the same position. Key figures count unique job URLs; each profile view names the actual posting location. Remote options and membership in individual teams must be checked in the posting. No automatic update on opening — external positions may have closed since.',
+    'meth.links.h':'Links and preview images',
+    'meth.links.p1':'Website and career targets were assigned editorially; the check status appears in the profile. LinkedIn links are only marked as found on the website when the profile URL actually appeared on the researched page. Other LinkedIn targets are editorial, unconfirmed profile assignments. After relocations or closures they may be invalid. Where no dedicated careers page was found, the link leads to the studio website.',
+    'meth.links.p2':'Available game preview images are embedded Steam store capsules of representative released titles; they do not necessarily illustrate the current project. Image and title link to the respective store page. All image rights belong to the respective rights holders. For some projects and pure support studios, no suitable preview images exist; this is indicated visibly. Country flags are embedded as small images from <a href="https://flagcdn.com" target="_blank" rel="noopener noreferrer">FlagCDN / Flagpedia</a> for reliable offline display.',
+    'meth.map.h':'Map, filters, and colors',
+    'meth.map.p':'The map uses Natural Earth 1:110m (public domain), a simplified geographic representation with no statement on border claims. Locations are based on approximate city centers; for Re-Logic only the Indiana region. In densely covered regions, markers are spread apart for selection; fine connecting lines point to the original city center. Zooming reduces the geographic offset. Continent buttons only change the map section, not the filters. For a filtered continent list, use the continent filter. For multi-location profiles, country and continent filters are applied to the same location. Genre, engine, and investor colors show the first normalized category. Filters consider all assigned genres and engines as well as Tencent minority stakes explicitly mentioned in the investor field; unmentioned stakes are not added.',
+    'meth.file.h':'One file, no runtime dependencies',
+    'meth.file.p':'The complete geometry, all data, available preview images, styles, and scripts are embedded in this HTML. Internet is only required for outgoing links. No analytics scripts, cookies, map APIs, or external fonts. "Reset" clears all filters; color selection and map view are preserved.',
+    'meth.source':'Show full source document','footer.brand':'STUDIO ATLAS / Document-based industry atlas','tooltip.aria':'Studio details','tooltip.close':'Close profile',
+    'dyn.filterTotal':'{shown} of {total} studio profiles','dyn.locationCount':'{count} mapped locations','dyn.mapSubtitle':'{profiles} profiles · {sites} locations · same filters as the directory',
+    'dyn.announce':'{count} studio profiles found.','dyn.snapshot':'Research {date}','dyn.footerDate':'Generated {date} · source document undated','dyn.legendEmpty':'No results for these filters.',
+    'dyn.pinned':'Profile pinned · Esc to close','dyn.unpinned':'Full profile · click marker to pin',
+    'profile.approximate':' (region, approximate)','profile.original':'Original data · document without survey date · {group}','profile.website':'Studio website','profile.careers':'Careers / Website',
+    'profile.linkedin.verified':'Profile URL found on researched website','profile.linkedin.unverified':'Editorially assigned profile URL, unconfirmed',
+    'profile.note':'LinkedIn: {linkedin}. Career source: {career}.','profile.note.reachable':'reachable at research time','profile.note.unreachable':'unreachable at research time',
+    'games.caption':'Representative games · not necessarily current projects','games.alt':'Steam artwork: {title}','games.none':'No verified game artwork available.',
+    'jobs.title':'Careers & open roles','jobs.col.area':'Area','jobs.col.desc':'Position / status','jobs.col.location':'Posting location',
+    'jobs.none.portal':'No matching results in the checked portal','jobs.none.unknown':'Not fully verifiable — open careers portal',
+    'jobs.other.summary':'{count} relevant positions at other / unassigned locations of the studio portal','jobs.other.note':'Not assigned to the documented map location; not included in map colors, career filters, or key figures.',
+    'jobs.research':'Research: {date} · {source}','jobs.source':'Checked source','jobs.errors':'Research notes ({count})',
+    'summary.p1':'The document portraits <strong>{studios} studio profiles</strong> in <strong>{countries} countries</strong>, organized into {groups} publisher and studio groups. It connects locations, engines, current projects, well-known franchises, genres, publishers, investors, and statements on layoffs and stability.',
+    'summary.p2':'Technology focus: {engines}. The list ranges from corporate AAA teams to independent indies. Security is mostly described qualitatively in the original; concrete dates and evidence are often missing.',
+    'research.summary':'Career sources for all {total} profiles were queried automatically on {date}. A public job API was fully paginated for {complete} profiles; relevant job links were found for {found} profiles. {unreachable} profiles had no reachable career source. All other cases remain explicitly incompletely checked. Research attempts, sources, timestamps, and limitations are given per profile.',
+  },
+  de: {
+    'nav.sections':'Berichtsbereiche','nav.offline':'Offline nutzbar','nav.directory':'Studioverzeichnis','nav.data':'Daten & Quellen',
+    'sidebar.aria':'Gemeinsame Filter für Karte und Tabelle','filter.title':'Filter','filter.reset':'Zurücksetzen','filter.search':'STUDIO ODER PROJEKT','filter.search.ph':'z. B. Remedy, Gothic …',
+    'filter.continent':'KONTINENT','filter.continent.all':'Alle Kontinente','filter.country':'LAND','filter.country.all':'Alle Länder',
+    'filter.genre':'GENRE','filter.genre.all':'Alle Genres','filter.engine':'ENGINE-FAMILIE','filter.engine.all':'Alle Engines',
+    'filter.stability':'ZUKUNFTSSICHERHEIT *','filter.stability.all':'Alle Einschätzungen','filter.investor':'INVESTOR / MUTTERKONZERN','filter.investor.all':'Alle Investoren',
+    'filter.publisher':'PUBLISHER','filter.publisher.all':'Alle Publisher','filter.jobs':'KARRIERE / FACHBEREICH','filter.jobs.all':'Alle Karriere-Status',
+    'filter.jobs.ta':'Technical Art: Treffer','filter.jobs.tanim':'Technical Animation: Treffer','filter.jobs.art':'Art: Treffer','filter.jobs.tools':'Tools Engineering: Treffer',
+    'filter.jobs.any':'Alle relevanten Stellen: Treffer','filter.jobs.none':'Keine passenden Portal-Treffer','filter.jobs.unknown':'Nicht vollständig prüfbar',
+    'filter.foot':'Filter wirken gemeinsam auf Karte, Kennzahlen und Liste. Mehrfach zugeordnete Genres und Engines werden berücksichtigt.',
+    'filter.footnote':'* Einschätzungen aus dem Ausgangsdokument, keine aktuelle Finanz- oder Arbeitsplatzgarantie.','filter.show':'Filter einblenden','filter.hide':'Filter ausblenden',
+    'stats.aria':'Kennzahlen der gefilterten Auswahl','stats.studios':'Studio-Profile · gefiltert','stats.countries':'Länder in der Auswahl','stats.tech':'Studios mit Technical-Art-Treffern','stats.jobs':'Eindeutige relevante Stellenlinks',
+    'intro.eyebrow':'Game Development · globaler Überblick','intro.headline':'Studios entdecken.<br><span style="color:var(--accent)">Perspektiven finden.</span>','intro.text':'Ein interaktiver Wegweiser durch Publisher-Netzwerke, Technologien und Karrierequellen — basierend auf der Game Studios Enzyklopädie.',
+    'map.title':'Die Studio-Landkarte','map.color':'Farbmodus','map.color.genre':'Genre','map.color.engine':'Engine','map.color.stability':'Zukunftssicherheit *','map.color.investor':'Investor','map.color.jobs':'Karriere-Status',
+    'map.view.world':'Welt','map.view.europe':'Europa','map.view.asia':'Asien','map.view.northamerica':'Nordamerika','map.view.southamerica':'Südamerika','map.view.africa':'Afrika','map.view.oceania':'Ozeanien',
+    'map.tech':'Technical-Art-Jobs ↗','map.fit':'Auswahl einpassen','map.aria':'Interaktive Weltkarte mit Studio-Markern. Mit Tab Marker auswählen, mit Enter Profil öffnen. Plus und Minus zoomen, Pfeiltasten verschieben.',
+    'map.hint':'Hover: Profil · Klick: anheften · Ziehen: verschieben · Mausrad: Zoom','map.zoom.in':'Karte vergrößern','map.zoom.out':'Karte verkleinern','map.zoom.home':'Weltansicht wiederherstellen','map.legend.aria':'Farblegende',
+    'map.credit':'Natural Earth · Public Domain · Stadtzentren mit Auswahlversatz, keine Büroadressen',
+    'map.empty':'Keine Standorte für diese Filterkombination.<br>Filter zurücksetzen oder Auswahl erweitern.',
+    'notice':'<strong>Quellenkritisch lesen.</strong> Projekte, Eigentümer und Sicherheitseinschätzungen stammen unverändert aus einem undatierten Dokument und können veraltet sein. Nur die Karrierequellen wurden separat geprüft. „Nicht vollständig prüfbar“ bedeutet ausdrücklich nicht „keine Jobs“.',
+    'table.title':'Studioverzeichnis','table.subtitle':'Ein Profil pro Eintrag im Dokument · alle Details aufklappen','table.sort':'Sortierung','table.sort.name':'Studio A–Z','table.sort.investor':'Investor A–Z','table.sort.country':'Land A–Z','table.sort.jobs':'Meiste Stellen zuerst',
+    'table.expand':'Alle öffnen','table.collapse':'Alle schließen','table.col.studio':'Studio','table.col.genre':'Genre','table.col.country':'Land','table.col.investor':'Investor / Mutterkonzern','table.col.project':'Projekt laut Dokument',
+    'table.empty':'Keine Studios gefunden. Bitte die gemeinsamen Filter anpassen.','table.detailsFor':'Details für',
+    'meth.title':'Datenbasis, Recherchegrenzen & Offline-Nutzung','meth.summary.h':'Zusammenfassung des Ausgangsdokuments','meth.what.h':'Was dieser Bericht zeigt',
+    'meth.what.p':'Alle 106 Studio-Profile und sämtliche ursprünglichen Profilfelder. Mehrere im selben Profil genannte Städte erhalten eigene Kartenmarker, bleiben aber eine Tabellenzeile. Die Auswahl ist die Auswahl des Dokuments — kein vollständiges Verzeichnis aller existierenden Game-Studios. Die Tabelle zeigt das vollständige Projektfeld, auch wenn mehrere Projekte genannt sind.',
+    'meth.time.h':'Zeitstand und Zukunftssicherheit',
+    'meth.time.p':'Das Dokument nennt keinen Erhebungsstand. Sein Inhalt wurde nicht als aktuelle Branchenrecherche validiert. Die vier Sicherheitsklassen sind redaktionelle, schlagwortbasierte Zusammenfassungen des Originaltextes, keine Prognosen oder Bonitätsbewertungen. Der vollständige Originaltext steht in jedem Profil. Die Kategorie „Unabhängig / privat“ kann Minderheitsbeteiligungen einschließen; maßgeblich bleibt das vollständige Investorenfeld.',
+    'meth.jobs.h':'Stellenrecherche',
+    'meth.jobs.p1':'Gesucht wurden Technical Art (auch Shader und Artist-Pipeline), Technical Animation/Rigging, Art (Artists, Animation, VFX und Art Direction) sowie Tools Engineering. Reine Gameplay- oder Rendering-Engineering-Rollen ohne Tools-Bezug sind nicht enthalten. Die Erfassung ist titelbasiert und kann anderssprachige Titel und dynamisch geladene Stellen übersehen. Reine Initiativbewerbungen sind keine bestätigten offenen Stellen. „Keine passenden Portal-Treffer“ gilt nur für die abgefragte Quelle und die zugeordneten Städte; niemals für sämtliche Karrieremöglichkeiten eines Unternehmens.',
+    'meth.jobs.p2':'Standortzuordnungen erfolgen bei öffentlichen Job-APIs anhand der Stadt im Inserat. Geteilte Portale und Teams können dieselbe Stelle zeigen. Kennzahlen zählen eindeutige Stellen-URLs; jede Profilansicht nennt den tatsächlichen Inseratsstandort. Remote-Optionen und Zugehörigkeit zu einzelnen Teams müssen im Inserat geprüft werden. Keine automatische Aktualisierung beim Öffnen — externe Stellen können inzwischen geschlossen sein.',
+    'meth.links.h':'Links und Vorschaubilder',
+    'meth.links.p1':'Website- und Karriereziele wurden redaktionell zugeordnet; der Prüfstatus steht im Profil. LinkedIn-Links sind nur dann als auf der Website gefunden markiert, wenn die Profiladresse tatsächlich auf der recherchierten Seite vorkam. Andere LinkedIn-Ziele sind redaktionelle, nicht bestätigte Profilzuordnungen. Nach Umzügen oder Schließungen können sie ungültig sein. Wo keine eigene Karriereseite ermittelt wurde, führt der Link zur Studio-Website.',
+    'meth.links.p2':'Vorhandene Spiele-Vorschaubilder sind eingebettete Steam-Store-Kapseln repräsentativer veröffentlichter Titel; sie illustrieren nicht zwingend das aktuelle Projekt. Bild und Titel führen zum jeweiligen Store-Eintrag. Alle Bildrechte liegen bei den jeweiligen Rechteinhabern. Für manche Projekte und reine Support-Studios fehlen passende Vorschaubilder; das wird sichtbar angegeben. Länderflaggen sind für zuverlässige Offline-Darstellung als kleine Bilder von <a href="https://flagcdn.com" target="_blank" rel="noopener noreferrer">FlagCDN / Flagpedia</a> eingebettet.',
+    'meth.map.h':'Karte, Filter und Farben',
+    'meth.map.p':'Die Karte verwendet Natural Earth 1:110m (Public Domain), eine vereinfachte geografische Darstellung ohne Aussage zu Grenzansprüchen. Standortbasis sind ungefähre Stadtzentren, bei Re-Logic nur die Region Indiana. In dichter belegten Regionen werden Marker zur Auswahl auseinandergezogen; feine Verbindungslinien zeigen auf das ursprüngliche Stadtzentrum. Zoom reduziert den geografischen Versatz. Kontinent-Buttons verändern nur den Kartenausschnitt, nicht die Filter. Für eine gefilterte Kontinentliste den Kontinentfilter verwenden. Bei Multi-Standort-Profilen werden Länder- und Kontinentfilter auf denselben Standort angewendet. Genre-, Engine- und Investorenfarben zeigen die erste normalisierte Kategorie. Filter berücksichtigen alle zugeordneten Genres und Engines sowie ausdrücklich im Investorenfeld erwähnte Tencent-Minderheitsbeteiligungen; nicht genannte Beteiligungen werden nicht ergänzt.',
+    'meth.file.h':'Eine Datei, ohne Laufzeit-Abhängigkeiten',
+    'meth.file.p':'Die komplette Geometrie, alle Daten, verfügbaren Vorschaubilder, Styles und Skripte sind in diesem HTML eingebettet. Internet ist nur für ausgehende Links erforderlich. Keine Analyse-Skripte, Cookies, Karten-APIs oder externe Schriftarten. „Zurücksetzen“ löscht alle Filter; Farbauswahl und Kartenansicht bleiben erhalten.',
+    'meth.source':'Vollständiges Ausgangsdokument anzeigen','footer.brand':'STUDIO ATLAS / Dokumentbasierter Branchenatlas','tooltip.aria':'Studio-Details','tooltip.close':'Profil schließen',
+    'dyn.filterTotal':'{shown} von {total} Studio-Profilen','dyn.locationCount':'{count} zugeordnete Standorte','dyn.mapSubtitle':'{profiles} Profile · {sites} Standorte · dieselben Filter wie im Verzeichnis',
+    'dyn.announce':'{count} Studio-Profile gefunden.','dyn.snapshot':'Recherche {date}','dyn.footerDate':'Erstellt {date} · Ausgangsdokument undatiert','dyn.legendEmpty':'Keine Treffer für diese Filter.',
+    'dyn.pinned':'Profil angeheftet · Esc zum Schließen','dyn.unpinned':'Vollständiges Profil · Klick auf Marker zum Anheften',
+    'profile.approximate':' (Region, ungefähr)','profile.original':'Originalangaben · Dokument ohne Erhebungsdatum · {group}','profile.website':'Studio-Website','profile.careers':'Karriere / Website',
+    'profile.linkedin.verified':'Profiladresse auf recherchierter Website gefunden','profile.linkedin.unverified':'Redaktionell zugeordnete Profiladresse, nicht bestätigt',
+    'profile.note':'LinkedIn: {linkedin}. Karrierequelle: {career}.','profile.note.reachable':'erreichbar bei Recherche','profile.note.unreachable':'nicht erreichbar bei Recherche',
+    'games.caption':'Repräsentative Spiele · nicht zwingend aktuelle Projekte','games.alt':'Steam-Vorschaubild: {title}','games.none':'Kein verifiziert zugeordnetes Spiele-Vorschaubild verfügbar.',
+    'jobs.title':'Karriere & offene Rollen','jobs.col.area':'Bereich','jobs.col.desc':'Stellenbeschreibung / Status','jobs.col.location':'Inseratsstandort',
+    'jobs.none.portal':'Keine passenden Treffer im geprüften Portal','jobs.none.unknown':'Nicht vollständig prüfbar — Karriereportal öffnen',
+    'jobs.other.summary':'{count} relevante Stellen an anderen / nicht zugeordneten Standorten des Studio-Portals','jobs.other.note':'Nicht dem dokumentierten Kartenstandort zugeordnet; nicht in Kartenfarben, Karrierefiltern oder Kennzahlen enthalten.',
+    'jobs.research':'Recherche: {date} · {source}','jobs.source':'Geprüfte Quelle','jobs.errors':'Recherchehinweise ({count})',
+    'summary.p1':'Das Dokument porträtiert <strong>{studios} Studio-Profile</strong> in <strong>{countries} Ländern</strong>, gegliedert in {groups} Publisher- und Studio-Gruppen. Es verbindet Standorte, Engines, aktuelle Projekte, bekannte Franchises, Genres, Publisher, Investoren sowie Aussagen zu Entlassungen und Stabilität.',
+    'summary.p2':'Technologischer Schwerpunkt: {engines}. Die Aufstellung reicht von konzerngebundenen AAA-Teams bis zu unabhängigen Indies. Sicherheit wird im Original meist qualitativ beschrieben; konkrete Zeitangaben und Belege fehlen häufig.',
+    'research.summary':'Karrierequellen aller {total} Profile wurden am {date} automatisiert abgefragt. Für {complete} Profile wurde ein öffentliches Job-API vollständig paginiert; bei {found} Profilen wurden relevante Stellenlinks gefunden. {unreachable} Profile hatten keine erreichbare Karrierequelle. Alle übrigen Fälle bleiben ausdrücklich unvollständig geprüft. Rechercheversuche, Quellen, Zeitpunkt und Einschränkungen sind pro Profil angegeben.',
+  },
+};
+const valueNamesDe = {
+  'Stable per Document':'Stabil laut Dokument','In Transition / Mixed':'Im Wandel / gemischt','Elevated Risk':'Erhöhtes Risiko','Unclear':'Nicht eindeutig',
+  'Positions found':'Stellen gefunden','No matching portal results':'Keine passenden Portal-Treffer','Not fully verifiable':'Nicht vollständig prüfbar','Source unavailable':'Quelle nicht erreichbar',
+  'Hit':'Treffer','No portal hits':'Keine Portal-Treffer','Unknown':'Unbekannt',
+  'Strategy / Building':'Strategie / Aufbau','Racing':'Rennspiele','Technology / Tools':'Technologie / Tools','Fighting':'Prügelspiel','Music':'Musik','Various':'Divers',
+  'Various / unknown':'Divers / unbekannt','Proprietary / in-house':'Proprietär / intern','Independent / private':'Unabhängig / privat',
+  'Europe':'Europa','Asia':'Asien','North America':'Nordamerika','South America':'Südamerika','Africa':'Afrika','Oceania':'Ozeanien',
+  'Location':'Standort','Current Project':'Aktuelles Projekt','Investor/Parent Company':'Investor/Mutterkonzern','Future Outlook & Layoffs':'Zukunftssicherheit & Entlassungen',
+  'Embracer Group Studios (Selected Core Subsidiaries)':'Embracer Group Studios (Ausgewählte Kern-Töchter)','Tencent-Funded / Invested Studios':'Tencent finanzierte / beteiligte Studios',
+  'Activision Studios (Remaining Units)':'Activision Studios (Verbliebene Einheiten)','Take-Two Studios (Excluding Rockstar)':'Take-Two Studios (Ohne Rockstar)',
+  'Individual Major Publishers & Studios':'Individuelle Groß-Publisher & Studios','Other Notable Studios & Indies':'Sonstige namhafte Studios & Indies',
+  'Public job portal; assignment based on the documented cities. Remote roles may span locations. No guarantee of complete location coverage.':'Öffentliches Stellenportal; Zuordnung über die dokumentierten Städte. Remote-Rollen können standortübergreifend sein. Keine Garantie vollständiger Standortabdeckung.',
+  'Public careers page checked; dynamic, protected, or external portals may not be fully captured. Location assignment unconfirmed for directly listed HTML postings. No statement about the absence of open positions.':'Öffentliche Karriereseite geprüft; dynamische, geschützte oder externe Portale möglicherweise nicht vollständig erfasst. Standortzuordnung bei direkt aufgeführten HTML-Inseraten nicht bestätigt. Keine Aussage über das Fehlen offener Stellen.',
+  'Check posting for location':'Standort im Inserat prüfen',
+};
+const t = key => translations[lang][key] ?? translations.en[key] ?? key;
+const tf = (key, vars) => Object.entries(vars).reduce((text, [name, value]) => text.replaceAll(`{${name}}`, value), t(key));
+const tv = value => lang === 'de' ? (valueNamesDe[value] ?? value) : value;
+const locale = () => lang === 'de' ? 'de' : 'en';
+const palette = ['#a9f27d','#79b9ff','#e1a4fa','#ffbf79','#6cddd3','#f38ca7','#d6d978','#a5abff','#e7a176','#75c4a4','#bda2d5','#e2c3a0','#67bee8','#df87c2','#90b4d2','#b9ce96','#e5b4b1','#c4b9f1'];
+const fixedColors = {'Stable per Document':'#a9f27d','In Transition / Mixed':'#ffbf79','Elevated Risk':'#f38ca7','Unclear':'#8996ab','Positions found':'#a9f27d','No matching portal results':'#e5bf7c','Not fully verifiable':'#8996ab','Source unavailable':'#b591b9','Hit':'#a9f27d','No portal hits':'#e5bf7c','Unknown':'#8996ab'};
+const views = {world:[0,0,1200,600],europe:[510,45,300,150],asia:[580,20,620,310],northamerica:[10,15,560,280],southamerica:[110,240,500,250],africa:[420,160,520,260],oceania:[800,260,400,200]};
+let camera = [...views.world], visibleStudios = [], expanded = new Set(), pinned = false, closeTimer, lastMarker = null, restoringFocus = false;
+const flag = code => String.fromCodePoint(...[...code].map(char=>127397+char.charCodeAt(0)));
+const countryFlag = code => `<img class="country-flag" src="${DATA.flags[code]}" width="20" height="14" alt="${escapeHtml(countryNames.of(code))}">`;
+const sortedUnique = values => [...new Set(values)].sort((a,b)=>a.localeCompare(b,locale()));
+const formatDate = date => new Intl.DateTimeFormat(lang==='de'?'de-DE':'en-US',{dateStyle:'medium',timeStyle:'short'}).format(new Date(date));
+const projectPoint = (lon,lat) => [(lon+180)*1200/360,(90-lat)*600/180];
+
+function populate(id, values, label = value => tv(value)) {
+  const select = $(id), current = select.value;
+  while (select.options.length > 1) select.remove(1);
+  for (const value of sortedUnique(values)) select.add(new Option(label(value), value));
+  select.value = current;
+}
+function populateFilters() {
+  populate('continent',DATA.studios.flatMap(studio=>studio.sites.map(site=>site.continent)));
+  populate('country',DATA.studios.flatMap(studio=>studio.sites.map(site=>site.country)),code=>`${flag(code)} ${countryNames.of(code)}`);
+  populate('genre',DATA.studios.flatMap(studio=>studio.genres));
+  populate('engine',DATA.studios.flatMap(studio=>studio.engine));
+  populate('stability',DATA.studios.map(studio=>studio.stability));
+  populate('investor',DATA.studios.flatMap(studio=>studio.investors));
+  populate('publisher',DATA.studios.map(studio=>studio.fields.Publisher));
+}
+populateFilters();
+
+function matchingSites(studio) {
+  return studio.sites.filter(site=>(!$('continent').value || site.continent===$('continent').value) && (!$('country').value || site.country===$('country').value));
+}
+
+function matchesJobs(studio, value) {
+  const research = studio.research;
+  if (!value) return true;
+  if (value==='any') return research.jobs.length>0;
+  if (value==='none') return research.status==='No matching portal results';
+  if (value==='unknown') return !research.complete && !research.jobs.length;
+  return research.jobs.some(job=>job.category===value);
+}
+
+function studioMatches(studio) {
+  const query = normalize($('search').value.trim());
+  return (!query || normalize(`${studio.name} ${Object.values(studio.fields).join(' ')} ${studio.group}`).includes(query))
+    && matchingSites(studio).length>0
+    && (!$('genre').value || studio.genres.includes($('genre').value))
+    && (!$('engine').value || studio.engine.includes($('engine').value))
+    && (!$('stability').value || studio.stability===$('stability').value)
+    && (!$('investor').value || studio.investors.includes($('investor').value))
+    && (!$('publisher').value || studio.fields.Publisher===$('publisher').value)
+    && matchesJobs(studio,$('jobs').value);
+}
+
+function colorKey(studio) {
+  const mode = $('color-mode').value;
+  if (mode==='genre') return studio.genres[0];
+  if (mode==='engine') return studio.engine[0];
+  if (mode==='jobs') return studio.research.status;
+  if (categories.includes(mode)) return studio.research.jobs.some(job=>job.category===mode) ? 'Hit' : studio.research.complete ? 'No portal hits' : 'Unknown';
+  return studio[mode];
+}
+
+function colorFor(key) {
+  if (fixedColors[key]) return fixedColors[key];
+  const mode = $('color-mode').value;
+  const keys = sortedUnique(DATA.studios.map(studio=>mode==='genre'?studio.genres[0]:mode==='engine'?studio.engine[0]:studio.investor));
+  const index=keys.indexOf(key);
+  return index<palette.length?palette[index]:`hsl(${index*137.508%360} 65% 72%)`;
+}
+
+function externalLink(url, label, title='') {
+  if (!/^https?:\/\//i.test(url)) return '';
+  return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer"${title?` title="${escapeHtml(title)}"`:''}>${escapeHtml(label)} ↗</a>`;
+}
+
+function renderGames(studio) {
+  const cards = studio.artwork.filter(game=>DATA.artwork[game.app]?.src).map(game=>{
+    const art = DATA.artwork[game.app];
+    return `<a class="game-card" href="${escapeHtml(art.source)}" target="_blank" rel="noopener noreferrer"><img src="${art.src}" alt="${escapeHtml(tf('games.alt',{title:game.title}))}" width="184" height="69" loading="lazy"><span>${escapeHtml(game.title)} ↗</span></a>`;
+  });
+  return cards.length ? `<div class="source-label">${t('games.caption')}</div><div class="game-strip">${cards.join('')}</div>` : `<div class="no-art">${t('games.none')}</div>`;
+}
+
+function renderJobs(studio) {
+  const research = studio.research;
+  const rows = categories.flatMap(category=>{
+    const jobs = research.jobs.filter(job=>job.category===category);
+    if (!jobs.length) return [`<tr><td>${escapeHtml(category)}</td><td colspan="2" class="job-status">${research.complete?t('jobs.none.portal'):t('jobs.none.unknown')}</td></tr>`];
+    return jobs.map((job,index)=>`<tr><td>${index===0?escapeHtml(category):''}</td><td>${externalLink(job.url,job.title)}</td><td>${escapeHtml(tv(job.location))}</td></tr>`);
+  }).join('');
+  const otherJobs = research.otherJobs || [];
+  const otherRows = otherJobs.map(job=>`<tr><td>${escapeHtml(job.category)}</td><td>${externalLink(job.url,job.title)}</td><td>${escapeHtml(tv(job.location))}</td></tr>`).join('');
+  const other = otherRows ? `<details class="career-note"><summary>${escapeHtml(tf('jobs.other.summary',{count:otherJobs.length}))}</summary><p>${t('jobs.other.note')}</p><div class="table-scroll"><table class="jobs-table"><thead><tr><th>${t('jobs.col.area')}</th><th>${t('jobs.col.desc')}</th><th>${t('jobs.col.location')}</th></tr></thead><tbody>${otherRows}</tbody></table></div></details>` : '';
+  return `<div class="career-head"><h4>${t('jobs.title')}</h4><span class="pill">${escapeHtml(tv(research.status))}</span></div><div class="table-scroll"><table class="jobs-table"><thead><tr><th>${t('jobs.col.area')}</th><th>${t('jobs.col.desc')}</th><th>${t('jobs.col.location')}</th></tr></thead><tbody>${rows}</tbody></table></div>${other}<p class="career-note">${tf('jobs.research',{date:escapeHtml(formatDate(research.checkedAt)),source:externalLink(research.source,t('jobs.source'))})}<br>${escapeHtml(tv(research.scope))}</p>${research.errors.length?`<details class="career-note"><summary>${escapeHtml(tf('jobs.errors',{count:research.errors.length}))}</summary>${research.errors.map(error=>`<div>${escapeHtml(error)}</div>`).join('')}</details>`:''}`;
+}
+
+function renderProfile(studio) {
+  const fields = Object.entries(studio.fields).map(([key,value])=>`<div class="${/Future|Location|Project|Franchise/.test(key)?'wide':''}"><dt>${escapeHtml(tv(key))}</dt><dd>${escapeHtml(value)}</dd></div>`).join('');
+  return `<div class="profile-heading"><div><h3>${escapeHtml(studio.name)}</h3><div class="profile-location">${studio.sites.map(site=>`${countryFlag(site.country)} ${escapeHtml(site.city)}${site.approximate?t('profile.approximate'):''}`).join(' · ')}</div></div></div><div class="profile-tags"><span class="pill"><span class="dot" style="background:${fixedColors[studio.stability]}"></span>${escapeHtml(tv(studio.stability))}</span><span class="pill">${escapeHtml(studio.engine.map(tv).join(' / '))}</span></div><div class="source-label">${escapeHtml(tf('profile.original',{group:tv(studio.group)}))}</div><dl class="profile-grid">${fields}</dl><div class="link-bar">${externalLink(studio.website,t('profile.website'))}${externalLink(studio.linkedin,'LinkedIn',studio.linkedinVerified?t('profile.linkedin.verified'):t('profile.linkedin.unverified'))}${externalLink(studio.careers,t('profile.careers'))}</div><div class="source-label">${escapeHtml(tf('profile.note',{linkedin:t(studio.linkedinVerified?'profile.linkedin.verified':'profile.linkedin.unverified'),career:t(studio.research.reachable?'profile.note.reachable':'profile.note.unreachable')}))}</div>${renderGames(studio)}${renderJobs(studio)}`;
+}
+
+function renderTable() {
+  const sort = $('sort').value;
+  const studios = [...visibleStudios].sort((a,b)=>{
+    if (sort==='jobs') return b.research.jobs.length-a.research.jobs.length || a.name.localeCompare(b.name,locale());
+    const value = studio => sort==='investor'?studio.investor:sort==='country'?countryNames.of(studio.sites[0].country):studio.name;
+    return value(a).localeCompare(value(b),locale()) || a.name.localeCompare(b.name,locale());
+  });
+  $('studio-rows').innerHTML = studios.map(studio=>{
+    const isOpen = expanded.has(studio.id);
+    const countries = sortedUnique(studio.sites.map(site=>site.country));
+    return `<tr class="studio-row${isOpen?' is-open':''}" data-id="${studio.id}"><td><div class="studio-name"><button class="expand-button" data-expand="${studio.id}" aria-expanded="${isOpen}" aria-controls="details-${studio.id}" aria-label="${escapeHtml(t('table.detailsFor'))} ${escapeHtml(studio.name)}">${isOpen?'−':'+'}</button><span>${escapeHtml(studio.name)}</span></div><div class="studio-group">${escapeHtml(tv(studio.group))}</div></td><td class="genre-cell">${escapeHtml(studio.fields.Genre)}</td><td class="country-cell">${countries.map(code=>`<span title="${escapeHtml(countryNames.of(code))}">${countryFlag(code)} ${escapeHtml(code)}</span>`).join(' ')}</td><td>${escapeHtml(studio.fields['Investor/Parent Company'])}</td><td class="project-cell">${escapeHtml(studio.fields['Current Project'])}</td></tr><tr class="detail-row" id="details-${studio.id}" ${isOpen?'':'hidden'}><td colspan="5"><div class="detail-inner">${isOpen?renderProfile(studio):''}</div></td></tr>`;
+  }).join('');
+  $('table-count').textContent = `(${studios.length})`;
+  $('table-empty').hidden = studios.length>0;
+  $('expand-all').textContent = studios.length && studios.every(studio=>expanded.has(studio.id))?t('table.collapse'):t('table.expand');
+}
+
+function updateResults() {
+  closeProfile();
+  visibleStudios = DATA.studios.filter(studioMatches);
+  const sites = visibleStudios.flatMap(matchingSites);
+  const jobs = new Set(visibleStudios.flatMap(studio=>studio.research.jobs.map(job=>job.url)));
+  $('stat-studios').textContent = visibleStudios.length;
+  $('stat-countries').textContent = new Set(sites.map(site=>site.country)).size;
+  $('stat-tech').textContent = visibleStudios.filter(studio=>studio.research.jobs.some(job=>job.category==='Technical Art')).length;
+  $('stat-jobs').textContent = jobs.size;
+  $('filter-total').textContent = tf('dyn.filterTotal',{shown:visibleStudios.length,total:DATA.studios.length});
+  $('location-count').textContent = tf('dyn.locationCount',{count:sites.length});
+  $('map-subtitle').textContent = tf('dyn.mapSubtitle',{profiles:visibleStudios.length,sites:sites.length});
+  $('map-empty').hidden = sites.length>0;
+  $('results-announcement').textContent = tf('dyn.announce',{count:visibleStudios.length});
+  renderTable();
+  renderMarkers();
+  renderLegend();
+}
+
+function geometryPath(geometry) {
+  const polygons = geometry.type==='Polygon'?[geometry.coordinates]:geometry.coordinates;
+  return polygons.map(polygon=>polygon.map(ring=>ring.map((point,index)=>`${index?'L':'M'}${projectPoint(point[0],point[1]).map(number=>number.toFixed(2)).join(',')}`).join('')+'Z').join('')).join('');
+}
+
+function initializeMap() {
+  $('land').innerHTML = DATA.geography.features.filter(feature=>feature.properties.CONTINENT!=='Antarctica').map(feature=>`<path class="land" d="${geometryPath(feature.geometry)}"><title>${escapeHtml((lang==='de'?feature.properties.NAME_DE:feature.properties.NAME_EN) || feature.properties.NAME)}</title></path>`).join('');
+  const grid = [];
+  for (let lon=-180;lon<=180;lon+=30) {
+    const x = projectPoint(lon,0)[0]; grid.push(`<path class="graticule" d="M${x},0V600"/>`);
+  }
+  for (let lat=-60;lat<=90;lat+=30) {
+    const y = projectPoint(0,lat)[1]; grid.push(`<path class="graticule" d="M0,${y}H1200"/>`);
+  }
+  $('grid').innerHTML = grid.join('');
+  const labels = lang==='de' ? [[-108,42,'NORDAMERIKA'],[-60,-12,'SÜDAMERIKA'],[23,47,'EUROPA'],[20,5,'AFRIKA'],[87,45,'ASIEN'],[138,-26,'OZEANIEN']] : [[-108,42,'NORTH AMERICA'],[-60,-12,'SOUTH AMERICA'],[23,47,'EUROPE'],[20,5,'AFRICA'],[87,45,'ASIA'],[138,-26,'OCEANIA']];
+  $('map-labels').innerHTML = labels.map(([lon,lat,title])=>{const [x,y]=projectPoint(lon,lat);return `<text class="map-label" x="${x}" y="${y}" text-anchor="middle">${title}</text>`;}).join('');
+}
+
+function renderMarkers() {
+  const entries = visibleStudios.flatMap(studio=>matchingSites(studio).map(site=>({studio,site})));
+  const scale = camera[2]/1200;
+  const placed = [],leaders = [],parts = [];
+  const spacing=14.5*scale;
+  for (const {studio,site} of entries) {
+    const [originX,originY]=projectPoint(site.lon,site.lat);
+    let x=originX,y=originY,attempt=0;
+    while (placed.some(point=>Math.hypot(point[0]-x,point[1]-y)<spacing)) {
+      attempt++;
+      const angle=attempt*2.399963,radius=Math.sqrt(attempt)*spacing*.75;
+      x=originX+Math.cos(angle)*radius;y=originY+Math.sin(angle)*radius;
+    }
+    placed.push([x,y]);
+    if(attempt)leaders.push(`<path class="marker-leader" d="M${originX},${originY}L${x},${y}"/>`);
+    const onMap=x>=camera[0]&&x<=camera[0]+camera[2]&&y>=camera[1]&&y<=camera[1]+camera[3];
+    const color=colorFor(colorKey(studio));
+    parts.push(`<g class="marker" data-studio="${studio.id}" data-city="${escapeHtml(site.city)}" role="button" tabindex="${onMap?'0':'-1'}"${onMap?'':' aria-hidden="true"'} aria-label="${escapeHtml(studio.name)} · ${escapeHtml(site.city)} · ${escapeHtml(tv(colorKey(studio)))}" transform="translate(${x},${y})"><circle class="halo" r="${11*scale}" fill="${color}"/><circle class="core" r="${5.8*scale}" fill="${color}"><title>${escapeHtml(studio.name)} · ${escapeHtml(site.city)}</title></circle></g>`);
+  }
+  $('markers').innerHTML = leaders.join('')+parts.join('');
+}
+
+function renderLegend() {
+  const counts = new Map();
+  for (const studio of visibleStudios) { const key=colorKey(studio); counts.set(key,(counts.get(key)||0)+1); }
+  $('legend').innerHTML = [...counts].sort((a,b)=>b[1]-a[1]).map(([key,count])=>`<span class="legend-item"><span class="dot" style="background:${colorFor(key)}"></span>${escapeHtml(tv(key))} <span class="muted">${count}</span></span>`).join('') || `<span>${t('dyn.legendEmpty')}</span>`;
+}
+
+function setCamera(next, preset='') {
+  closeProfile();
+  const minWidth=30, maxWidth=1200;
+  const width = Math.max(minWidth,Math.min(maxWidth,next[2]));
+  const height = width/2;
+  camera = [Math.min(1200-width,Math.max(0,next[0])),Math.max(0,Math.min(600-height,next[1])),width,height];
+  $('map').setAttribute('viewBox',camera.join(' '));
+  $('map-labels').hidden = width<600;
+  $('map-labels').style.display = width<600?'none':'';
+  for (const button of $('map-presets').querySelectorAll('button')) {
+    button.classList.toggle('active',button.dataset.view===preset);
+    button.setAttribute('aria-pressed',String(button.dataset.view===preset));
+  }
+  renderMarkers();
+}
+
+function zoom(factor, point) {
+  const [x,y,w,h]=camera;
+  const center=point || [x+w/2,y+h/2];
+  const actualFactor=Math.max(30,Math.min(1200,w*factor))/w;
+  setCamera([center[0]-(center[0]-x)*actualFactor,center[1]-(center[1]-y)*actualFactor,w*actualFactor,h*actualFactor]);
+}
+
+function fitSelection() {
+  const points=visibleStudios.flatMap(matchingSites).map(site=>projectPoint(site.lon,site.lat));
+  if (!points.length) return;
+  const xs=points.map(point=>point[0]),ys=points.map(point=>point[1]);
+  const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+  const width=Math.min(1200,Math.max(65,(maxX-minX)*1.3,(maxY-minY)*2.6));
+  setCamera([(minX+maxX-width)/2,(minY+maxY-width/2)/2,width,width/2]);
+}
+
+function openProfile(marker, pin=false) {
+  clearTimeout(closeTimer);
+  if (pinned && !pin) return;
+  const studio=DATA.studios.find(studio=>studio.id===marker.dataset.studio);
+  if (!studio) return;
+  lastMarker={id:studio.id,city:marker.dataset.city}; pinned=pin;
+  $('tooltip-content').innerHTML=renderProfile(studio);
+  $('tooltip-pin').textContent=pin?t('dyn.pinned'):t('dyn.unpinned');
+  $('tooltip').hidden=false;
+  const rect=marker.getBoundingClientRect();
+  const tooltip=$('tooltip'),width=tooltip.offsetWidth,height=tooltip.offsetHeight;
+  const left=rect.right+16+width>innerWidth ? Math.max(12,rect.left-width-16) : rect.right+16;
+  tooltip.style.left=`${left}px`;
+  tooltip.style.top=`${Math.max(12,Math.min(rect.top-80,innerHeight-height-12))}px`;
+}
+
+function closeProfile(restoreFocus=false) {
+  clearTimeout(closeTimer); pinned=false; $('tooltip').hidden=true;
+  if (restoreFocus && lastMarker) {
+    restoringFocus=true;
+    $('markers').querySelector(`[data-studio="${lastMarker.id}"][data-city="${CSS.escape(lastMarker.city)}"]`)?.focus({preventScroll:true});
+    restoringFocus=false;
+  }
+}
+
+function scheduleClose() {
+  clearTimeout(closeTimer);
+  if (!pinned) closeTimer=setTimeout(()=>closeProfile(),240);
+}
+
+for (const id of filterIds) $(id).addEventListener('change',updateResults);
+$('search').addEventListener('input',updateResults);
+$('reset').addEventListener('click',()=>{ for (const id of filterIds) $(id).value=''; $('search').value=''; updateResults(); });
+$('color-mode').addEventListener('change',()=>{renderMarkers();renderLegend();});
+$('sort').addEventListener('change',renderTable);
+$('studio-rows').addEventListener('click',event=>{
+  const button=event.target.closest('[data-expand]');
+  if (!button) return;
+  const id=button.dataset.expand;
+  if (expanded.has(id)) expanded.delete(id); else expanded.add(id);
+  renderTable();
+  $('studio-rows').querySelector(`[data-expand="${id}"]`)?.focus({preventScroll:true});
+});
+$('expand-all').addEventListener('click',()=>{
+  const allOpen=visibleStudios.every(studio=>expanded.has(studio.id));
+  for (const studio of visibleStudios) { if (allOpen) expanded.delete(studio.id); else expanded.add(studio.id); }
+  renderTable();
+});
+$('map-presets').addEventListener('click',event=>{const button=event.target.closest('[data-view]');if(button)setCamera(views[button.dataset.view],button.dataset.view);});
+$('tech-preset').addEventListener('click',()=>{$('jobs').value='Technical Art';$('color-mode').value='Technical Art';updateResults();fitSelection();});
+$('fit-map').addEventListener('click',fitSelection);
+$('zoom-in').addEventListener('click',()=>zoom(.7));
+$('zoom-out').addEventListener('click',()=>zoom(1/.7));
+$('home-map').addEventListener('click',()=>setCamera(views.world,'world'));
+$('mobile-filters').addEventListener('click',()=>{
+  const show=$('sidebar').classList.toggle('show');$('mobile-filters').setAttribute('aria-expanded',String(show));$('mobile-filters').textContent=show?t('filter.hide'):t('filter.show');
+  if(show) $('sidebar').scrollIntoView({block:'start',behavior:'smooth'});
+});
+$('tooltip-close').addEventListener('click',()=>closeProfile(true));
+$('tooltip').addEventListener('mouseenter',()=>clearTimeout(closeTimer));
+$('tooltip').addEventListener('mouseleave',scheduleClose);
+$('tooltip').addEventListener('focusin',()=>{clearTimeout(closeTimer);pinned=true;$('tooltip-pin').textContent=t('dyn.pinned');});
+$('markers').addEventListener('mouseover',event=>{const marker=event.target.closest('.marker');if(marker && !marker.contains(event.relatedTarget))openProfile(marker);});
+$('markers').addEventListener('mouseout',event=>{const marker=event.target.closest('.marker');if(marker && !marker.contains(event.relatedTarget))scheduleClose();});
+$('markers').addEventListener('click',event=>{const marker=event.target.closest('.marker');if(marker){event.stopPropagation();openProfile(marker,true);}});
+$('markers').addEventListener('focusin',event=>{const marker=event.target.closest('.marker');if(marker&&!restoringFocus)openProfile(marker);});
+$('markers').addEventListener('focusout',event=>{if(!$('tooltip').contains(event.relatedTarget))scheduleClose();});
+$('markers').addEventListener('keydown',event=>{
+  if (event.key==='Enter'||event.key===' ') {const marker=event.target.closest('.marker');if(marker){event.preventDefault();openProfile(marker,true);$('tooltip-close').focus();}}
+});
+document.addEventListener('keydown',event=>{if(event.key==='Escape')closeProfile(true);});
+document.addEventListener('click',event=>{if(!event.target.closest('.tooltip,.marker'))closeProfile();});
+window.addEventListener('resize',()=>closeProfile());
+
+const svg=$('map');
+function svgPoint(event) {
+  const point=svg.createSVGPoint();point.x=event.clientX;point.y=event.clientY;
+  return point.matrixTransform(svg.getScreenCTM().inverse());
+}
+svg.addEventListener('wheel',event=>{event.preventDefault();const point=svgPoint(event);zoom(event.deltaY>0?1.15:1/1.15,[point.x,point.y]);},{passive:false});
+let drag=null;
+svg.addEventListener('pointerdown',event=>{
+  if(event.button!==0||event.target.closest('.marker'))return;
+  drag={clientX:event.clientX,clientY:event.clientY};
+  svg.setPointerCapture(event.pointerId);svg.classList.add('dragging');
+});
+svg.addEventListener('pointermove',event=>{
+  if(!drag)return;
+  const matrix=svg.getScreenCTM();
+  const dx=(event.clientX-drag.clientX)/matrix.a,dy=(event.clientY-drag.clientY)/matrix.d;
+  setCamera([camera[0]-dx,camera[1]-dy,camera[2],camera[3]]);
+  drag.clientX=event.clientX;drag.clientY=event.clientY;
+});
+function endDrag(){drag=null;svg.classList.remove('dragging');}
+svg.addEventListener('pointerup',endDrag);svg.addEventListener('pointercancel',endDrag);svg.addEventListener('lostpointercapture',endDrag);
+svg.addEventListener('keydown',event=>{
+  if(event.target!==svg)return;
+  if(['+','=','-','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))event.preventDefault();
+  if(event.key==='+'||event.key==='=')zoom(.8);if(event.key==='-')zoom(1.25);
+  const offset=camera[2]*.08;
+  if(event.key==='ArrowLeft')setCamera([camera[0]-offset,camera[1],camera[2],camera[3]]);
+  if(event.key==='ArrowRight')setCamera([camera[0]+offset,camera[1],camera[2],camera[3]]);
+  if(event.key==='ArrowUp')setCamera([camera[0],camera[1]-offset,camera[2],camera[3]]);
+  if(event.key==='ArrowDown')setCamera([camera[0],camera[1]+offset,camera[2],camera[3]]);
+});
+
+function initializeSummary() {
+  const groupCounts=new Map();
+  for(const studio of DATA.studios)groupCounts.set(studio.group,(groupCounts.get(studio.group)||0)+1);
+  const topEngine=[...new Set(DATA.studios.flatMap(studio=>studio.engine))].map(engine=>[engine,DATA.studios.filter(studio=>studio.engine.includes(engine)).length]).sort((a,b)=>b[1]-a[1]);
+  $('document-summary').innerHTML=`<p>${tf('summary.p1',{studios:DATA.studios.length,countries:new Set(DATA.studios.flatMap(studio=>studio.sites.map(site=>site.country))).size,groups:groupCounts.size})}</p><p>${tf('summary.p2',{engines:topEngine.slice(0,3).map(([engine,count])=>`${escapeHtml(tv(engine))} (${count})`).join(', ')})}</p><ul>${[...groupCounts].map(([group,count])=>`<li>${escapeHtml(tv(group))}: ${count}</li>`).join('')}</ul>`;
+  const complete=DATA.studios.filter(studio=>studio.research.complete).length;
+  const found=DATA.studios.filter(studio=>studio.research.jobs.length).length;
+  const unreachable=DATA.studios.filter(studio=>!studio.research.reachable).length;
+  $('research-summary').textContent=tf('research.summary',{total:DATA.studios.length,date:formatDate(DATA.generatedAt),complete,found,unreachable});
+}
+
+function applyLanguage(next) {
+  lang = next;
+  localStorage.setItem('atlas-lang', lang);
+  document.documentElement.lang = lang;
+  countryNames = new Intl.DisplayNames([lang], {type:'region'});
+  for (const element of document.querySelectorAll('[data-i18n]')) element.textContent = t(element.dataset.i18n);
+  for (const element of document.querySelectorAll('[data-i18n-html]')) element.innerHTML = t(element.dataset.i18nHtml);
+  for (const element of document.querySelectorAll('[data-i18n-placeholder]')) element.placeholder = t(element.dataset.i18nPlaceholder);
+  for (const element of document.querySelectorAll('[data-i18n-aria]')) element.setAttribute('aria-label', t(element.dataset.i18nAria));
+  for (const code of ['en','de']) $(`lang-${code}`).classList.toggle('active', code === lang);
+  if ($('sidebar').classList.contains('show')) $('mobile-filters').textContent = t('filter.hide');
+  populateFilters();
+  closeProfile();
+  initializeMap();
+  initializeSummary();
+  $('snapshot-date').textContent = tf('dyn.snapshot',{date:new Intl.DateTimeFormat(lang==='de'?'de-DE':'en-US',{dateStyle:'medium'}).format(new Date(DATA.generatedAt))});
+  $('footer-date').textContent = tf('dyn.footerDate',{date:formatDate(DATA.generatedAt)});
+  updateResults();
+}
+$('lang-en').addEventListener('click',()=>applyLanguage('en'));
+$('lang-de').addEventListener('click',()=>applyLanguage('de'));
+
+$('source-document').textContent=DATA.sourceText;
+applyLanguage(lang);
+</script>
+</body>
+</html>
