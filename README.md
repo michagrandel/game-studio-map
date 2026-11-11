@@ -23,6 +23,10 @@ Steam artwork, all without a server or external runtime resources.
   `localStorage`. Studio profile data itself is in English (the source
   document's language)
 
+## Quick start
+
+Open the finished report by double-clicking `game-studio-report.html`.
+
 ## Project structure
 
 | File | Purpose |
@@ -43,10 +47,6 @@ Steam artwork, all without a server or external runtime resources.
 - No npm dependencies — no `npm install` needed
 - Network access only for the refresh step (job portals, Natural Earth,
   flagcdn.com, Steam artwork)
-
-## Usage
-
-Open the finished report by double-clicking `game-studio-report.html`.
 
 ## Rebuild and Tests
 
