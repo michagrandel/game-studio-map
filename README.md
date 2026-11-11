@@ -21,6 +21,20 @@ Steam artwork, all without a server or external runtime resources.
   Lever, SmartRecruiters, Jobylon, careers pages), categorized across engineering,
   design, art, production, QA, marketing, operations, and other studio roles
 - Filters by group, continent, engine, genre, investor, and stability
+- Map/List tabs share the same filters. Continent buttons below the statistic cards filter
+  both views; the top
+  Studio directory link opens the List tab. Tabs support
+  Left/Right arrow keys and Home/End. Opening or reloading the page always
+  selects Map, including when the URL retains an old List fragment.
+- The AI provenance notice is a darker, right-aligned second row inside the header and stays
+  visible in both views. Continent buttons sit right-aligned beside the tabs.
+- The map toolbar puts Fit selection and Color mode on one row, without a
+  separate map heading.
+- The List panel matches the Map panel's flush, square top corners and compact
+  toolbar: Expand all and the profile count on the left, Sort by on the right.
+- The larger shared Career dropdown is centered above the statistic cards.
+  Continent buttons remain below the cards. Career filters both views and stays
+  synchronized with the sidebar.
 - **Language switch (EN/DE)** in the top bar; the UI language is persisted in
   `localStorage`. Studio profile data itself is in English (the source
   document's language)
@@ -175,7 +189,8 @@ node --test
   source and cache and asks for `--reparse` or `--refresh`.
 - Studios with multiple sites are listed as one profile per site; deviations
   from the default location detection are controlled via `locationOverrides`.
-- The header shows `Last updated: DD.MM.YYYY` from the successful report build
+- The header shows a localized month name (e.g. `Last updated: 12 November 2026`)
+  from the successful report build
   timestamp (`updatedAt`). It does not imply all facts were newly verified.
   Career research retains its own timestamps, separate from studio collection
   dates.

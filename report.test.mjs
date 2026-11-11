@@ -18,6 +18,59 @@ test('Game Studio Map branding and adjacent GitHub navigation link are present',
   assert.match(html, /'footer.brand':'GAME STUDIO MAP \/ Dokumentbasierter Branchenatlas'/);
 });
 
+test('stable job security uses concise localized display labels', () => {
+  const definition = html.match(/^const tv = .+;$/m)[0];
+  assert.equal(runInNewContext(`${definition}; tv('Stable per Document')`, {lang:'en'}), 'Stable');
+  assert.equal(runInNewContext(`${definition}; tv('Stable per Document')`, {
+    lang:'de', DATA:{}, valueNamesDe:{'Stable per Document':'Stabil'},
+  }), 'Stabil');
+  assert.match(html, /'Stable per Document':'Stabil'/);
+});
+
+test('map and list tabs toggle only panels and retain shared continent controls', () => {
+  assert.ok(html.indexOf('id="map-presets"') < html.indexOf('id="studio-map"'));
+  assert.doesNotMatch(html, /id="map-title"|id="map-subtitle"/);
+  assert.doesNotMatch(html, /id="table-title"/);
+  assert.match(html, /#studio-map,#studio-list\{border-top-left-radius:0;border-top-right-radius:0;margin-top:0\}/);
+  assert.match(html, /#studio-map>\.panel-head,#studio-list>\.panel-head\{padding:10px 17px\}/);
+  assert.match(html, /id="fit-map"[\s\S]*?<\/button><\/div><div class="map-controls">/);
+  assert.equal([...html.matchAll(/id="map-presets"/g)].length, 1);
+  assert.equal([...html.matchAll(/id="map-career"/g)].length, 1);
+  assert.ok(html.indexOf('id="map-career"') < html.indexOf('id="view-tabs"'));
+  assert.ok(html.indexOf('id="map-presets"') > html.indexOf('<section class="stats"'));
+  assert.ok(html.indexOf('id="map-career"') < html.indexOf('<section class="stats"'));
+  assert.match(html, /\.career-hero\{display:flex;justify-content:center;margin-top:24px/);
+  assert.match(html, /<div class="notice header-notice" data-i18n-html="notice">[\s\S]*?<\/div>\s*<\/header>/);
+  assert.match(html, /color:#748198;text-align:right/);
+  assert.match(html, /\.app>main,\.app>\.sidebar\{padding-top:0\}/);
+  assert.match(html, /const careerSelectIds = \['map-career'\]/);
+  assert.doesNotMatch(html, /list-toolbar-career|career-control-template/);
+  assert.ok(html.indexOf('data-i18n-html="notice"') < html.indexOf('id="view-tabs"'));
+  assert.ok(html.indexOf('id="map-presets"') > html.indexOf('id="view-tabs"'));
+  assert.ok(html.indexOf('data-i18n-html="notice"') < html.indexOf('id="studio-map"'));
+  assert.equal([...html.matchAll(/data-i18n-html="notice"/g)].length, 1);
+  assert.match(html, /id="studio-list" role="tabpanel" aria-labelledby="tab-list" tabindex="0" hidden/);
+  const elements = Object.fromEntries(['tab-map','tab-list','studio-map','studio-list'].map(id => [id, {
+    attributes: {}, setAttribute(key, value) { this.attributes[key] = value; },
+  }]));
+  let closes = 0;
+  const body = html.match(/function selectView\(view\) \{[\s\S]*?\n\}/)[0];
+  const context = { $: id => elements[id], closeProfile: () => closes++ };
+  runInNewContext(`${body};selectView('list');`, context);
+  assert.equal(elements['studio-map'].hidden, true);
+  assert.equal(elements['studio-list'].hidden, false);
+  assert.equal(elements['tab-list'].attributes['aria-selected'], 'true');
+  assert.equal(elements['tab-map'].tabIndex, -1);
+  runInNewContext("selectView('map');", context);
+  assert.equal(elements['studio-map'].hidden, false);
+  assert.equal(elements['studio-list'].hidden, true);
+  assert.equal(elements['tab-map'].tabIndex, 0);
+  assert.equal(closes, 2);
+  assert.match(html, /'view.map':'Karte','view.list':'Liste'/);
+  assert.match(html, /window\.addEventListener\('hashchange',applyViewHash\);[\s\S]*?selectView\('map'\);/);
+  assert.doesNotMatch(html, /^applyViewHash\(\);/m);
+});
+
 test('studio dates and collected evidence survive the report build without implying verification', async () => {
   const research = JSON.parse(await readFile(new URL('./studio-research.json', import.meta.url), 'utf8'));
   validateStudioResearch(research, data.studios.map(studio => studio.name));
@@ -171,7 +224,7 @@ test('the self-contained application script has valid JavaScript syntax', () => 
   assert.match(html, /map-career-options/);
   assert.match(html, /'map\.career':'Career'/);
   assert.match(html, /'map\.career':'Berufsfeld'/);
-  assert.match(html, /\$\('map-career'\)\.addEventListener\('change'/);
+  assert.match(html, /for \(const id of careerSelectIds\) \$\(id\)\.addEventListener\('change'/);
   assert.match(html, /\$\('map-career'\)\.value = categories\.includes\(\$\('jobs'\)\.value\)/);
   assert.match(html, /\.filter\(job=>!categories\.includes\(selectedCareer\) \|\| job\.category===selectedCareer\)/);
   assert.doesNotMatch(html, /Read with a critical eye|Projects, owners, and security assessments come unchanged from an undated document/);
@@ -205,7 +258,7 @@ test('report update metadata and general career controls replace the Technical A
   assert.ok(Date.parse(data.updatedAt) >= Date.parse(data.generatedAt));
   assert.match(html, /INDUSTRY EXPLORER<\/span><span class="last-updated" id="last-updated">/);
   assert.match(html, /Last updated: \{date\}/);
-  assert.match(html, /Intl\.DateTimeFormat\('de-DE',\{day:'2-digit',month:'2-digit',year:'numeric'\}\)/);
+  assert.match(html, /Intl\.DateTimeFormat\(lang==='de'\?'de-DE':'en-GB',\{day:'numeric',month:'long',year:'numeric'\}\)/);
   assert.match(html, /id="stat-hiring"/);
   assert.doesNotMatch(html, /tech-preset|stat-tech|stats\.tech|map\.tech/);
   const css = html.match(/<style>([\s\S]*?)<\/style>/)[1];

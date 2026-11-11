@@ -27,12 +27,33 @@
 @media(max-width:1100px){.topbar{height:auto;min-height:66px;gap:12px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}.brand{flex-wrap:wrap}}
 @media(max-width:760px){.last-updated{font-size:10px}.topbar{min-height:58px}.legend button.legend-item{padding:6px 8px}}
 </style>
+<style>
+.view-controls{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:0}
+#studio-map,#studio-list{border-top-left-radius:0;border-top-right-radius:0;margin-top:0}
+#studio-map>.panel-head,#studio-list>.panel-head{padding:10px 17px}
+.topbar{height:auto;flex-wrap:wrap;row-gap:0;padding-top:16px;padding-bottom:16px}
+.header-notice.notice{flex-basis:100%;margin:0;background:none;border:0;padding:0;font-size:11px;font-weight:400;letter-spacing:0;color:#748198;text-align:right}
+.app>main,.app>.sidebar{padding-top:0}
+.header-notice.notice strong{font-weight:400;color:inherit}
+@media(max-width:760px){.header-notice.notice{font-size:10px}}
+.view-controls #map-presets{margin-left:auto}
+.career-hero{display:flex;justify-content:center;margin-top:24px;margin-bottom:24px}
+.career-hero .career-control{font-size:16px;gap:12px;max-width:100%}
+.career-hero select{font-size:16px;padding:10px 16px;width:320px;min-width:0;max-width:100%}
+@media(max-width:760px){.career-hero .career-control{flex-wrap:wrap;justify-content:center}.career-hero select{width:min(320px,100%)}}
+.view-tabs{display:flex;gap:4px;border-bottom:1px solid var(--line)}
+.view-tabs button{padding:10px 24px;border:0;border-radius:8px 8px 0 0;background:transparent;color:var(--muted);font:inherit;cursor:pointer}
+.view-tabs button[aria-selected="true"]{color:var(--text);background:var(--panel);box-shadow:inset 0 -2px var(--accent)}
+[role="tabpanel"][hidden]{display:none}
+.legend-hint{margin:0;padding:0 17px 10px;font-size:11px;color:var(--muted)}
+</style>
 </head>
 <body>
 <noscript>This interactive report requires JavaScript. All data, maps, and available preview images are embedded in this file.</noscript>
 <header class="topbar">
   <div class="brand"><span class="brand-icon" aria-hidden="true">⌖</span> GAME STUDIO MAP <span class="pill">INDUSTRY EXPLORER</span><span class="last-updated" id="last-updated"></span></div>
   <nav class="toplinks" data-i18n-aria="nav.sections" aria-label="Report sections"><span class="offline-label muted"><span class="dot"></span> <span data-i18n="nav.offline">Works offline</span></span><a href="#studio-list" data-i18n="nav.directory">Studio directory</a><a href="#methodology" data-i18n="nav.data">Data & sources</a><a href="https://github.com/michagrandel/game-studio-map" target="_blank" rel="noopener noreferrer">GitHub</a><span class="lang-switch" role="group" aria-label="Language / Sprache"><button id="lang-en" type="button">EN</button><button id="lang-de" type="button">DE</button></span></nav>
+<div class="notice header-notice" data-i18n-html="notice"><strong>AI-collected information — not independently verified.</strong> Details may be inaccurate or outdated.</div>
 </header>
 <div class="app">
 <aside class="sidebar" id="sidebar" data-i18n-aria="sidebar.aria" aria-label="Shared filters for map and table">
@@ -52,15 +73,24 @@
 </aside>
 <main>
  <button class="mobile-filters" id="mobile-filters" aria-expanded="false" aria-controls="sidebar" data-i18n="filter.show">Show filters</button>
+ <div class="career-hero">
+  <label class="color-control career-control"><span data-i18n="map.career">Career</span> <select id="map-career"><option value="" data-i18n="map.career.all">All</option><optgroup id="map-career-options"></optgroup></select></label>
+ </div>
  <section class="stats" data-i18n-aria="stats.aria" aria-label="Key figures of the filtered selection">
   <div class="stat"><div class="stat-value" id="stat-studios">—</div><div class="stat-label" data-i18n="stats.studios">Studio profiles · filtered</div></div>
   <div class="stat"><div class="stat-value" id="stat-countries">—</div><div class="stat-label" data-i18n="stats.countries">Countries in selection</div></div>
   <div class="stat"><div class="stat-value" id="stat-hiring">—</div><div class="stat-label" data-i18n="stats.hiring">Studios with open positions</div></div>
   <div class="stat"><div class="stat-value" id="stat-jobs">—</div><div class="stat-label" data-i18n="stats.jobs">Unique job postings</div></div>
  </section>
- <section class="panel" aria-labelledby="map-title">
-  <div class="panel-head"><div><h2 id="map-title" data-i18n="map.title">The studio map</h2><p id="map-subtitle">Locations and technologies at a glance</p></div><div class="map-controls"><label class="color-control career-control"><span data-i18n="map.career">Career</span> <select id="map-career"><option value="" data-i18n="map.career.all">All</option><optgroup id="map-career-options"></optgroup></select></label><label class="color-control"><span data-i18n="map.color">Color mode</span> <select id="color-mode"><option value="genre" data-i18n="map.color.genre">Genre</option><option value="engine" data-i18n="map.color.engine">Engine</option><option value="stability" data-i18n="map.color.stability">Job security *</option><option value="investor" data-i18n="map.color.investor">Investor</option><option value="jobs" data-i18n="map.color.jobs">Career status</option><option value="Technical Art">Technical Art</option><option value="Technical Animation">Technical Animation</option><option value="Art">Art</option><option value="Tools Engineering">Tools Engineering</option></select></label></div></div>
-  <div class="panel-head" style="padding:10px 17px"><div class="map-actions" id="map-presets"><button data-view="world" class="active" data-i18n="map.view.world">World</button><button data-view="europe" data-i18n="map.view.europe">Europe</button><button data-view="asia" data-i18n="map.view.asia">Asia</button><button data-view="northamerica" data-i18n="map.view.northamerica">North America</button><button data-view="southamerica" data-i18n="map.view.southamerica">South America</button><button data-view="africa" data-i18n="map.view.africa">Africa</button><button data-view="oceania" data-i18n="map.view.oceania">Oceania</button></div><div class="map-actions"><button id="fit-map" data-i18n="map.fit">Fit selection</button></div></div>
+ <div class="view-controls">
+  <div class="view-tabs" id="view-tabs" role="tablist" data-i18n-aria="view.label" aria-label="Studio view">
+   <button type="button" id="tab-map" role="tab" aria-selected="true" aria-controls="studio-map" data-i18n="view.map">Map</button>
+   <button type="button" id="tab-list" role="tab" aria-selected="false" aria-controls="studio-list" tabindex="-1" data-i18n="view.list">List</button>
+  </div>
+  <div class="map-actions" id="map-presets" role="group" data-i18n-aria="filter.continent" aria-label="CONTINENT"><button data-view="world" class="active" data-i18n="map.view.world">World</button><button data-view="europe" data-i18n="map.view.europe">Europe</button><button data-view="asia" data-i18n="map.view.asia">Asia</button><button data-view="northamerica" data-i18n="map.view.northamerica">North America</button><button data-view="southamerica" data-i18n="map.view.southamerica">South America</button><button data-view="africa" data-i18n="map.view.africa">Africa</button><button data-view="oceania" data-i18n="map.view.oceania">Oceania</button></div>
+ </div>
+ <section class="panel" id="studio-map" role="tabpanel" aria-labelledby="tab-map" tabindex="0">
+  <div class="panel-head" style="padding:10px 17px"><div class="map-actions"><button id="fit-map" data-i18n="map.fit">Fit selection</button></div><div class="map-controls"><label class="color-control"><span data-i18n="map.color">Color mode</span> <select id="color-mode"><option value="genre" data-i18n="map.color.genre">Genre</option><option value="engine" data-i18n="map.color.engine">Engine</option><option value="stability" data-i18n="map.color.stability">Job security *</option><option value="investor" data-i18n="map.color.investor">Investor</option><option value="jobs" data-i18n="map.color.jobs">Career status</option><option value="Technical Art">Technical Art</option><option value="Technical Animation">Technical Animation</option><option value="Art">Art</option><option value="Tools Engineering">Tools Engineering</option></select></label></div></div>
   <div class="map-wrap" id="map-wrap">
    <svg id="map" viewBox="0 0 1200 600" role="group" data-i18n-aria="map.aria" aria-label="Interactive world map with studio markers. Select markers with Tab, open profile with Enter. Plus and minus zoom, arrow keys pan." tabindex="0"><g id="grid"></g><g id="land"></g><g id="map-labels"></g><g id="markers"></g></svg>
    <div class="map-empty" id="map-empty" hidden data-i18n-html="map.empty">No locations for this filter combination.<br>Reset filters or widen the selection.</div>
@@ -68,11 +98,11 @@
    <div class="map-navigation"><button id="zoom-in" data-i18n-aria="map.zoom.in" aria-label="Zoom in">+</button><button id="zoom-out" data-i18n-aria="map.zoom.out" aria-label="Zoom out">−</button><button id="home-map" data-i18n-aria="map.zoom.home" aria-label="Restore world view">⌂</button></div>
   </div>
   <div class="legend" id="legend" data-i18n-aria="map.legend.aria" aria-label="Color legend"></div>
+  <p class="legend-hint" data-i18n="map.legend.hint">Toggle legend entries to show or hide pins.</p>
   <div class="map-credit"><span data-i18n="map.credit">Natural Earth · Public Domain · city centers with selection offset, not office addresses</span><span id="location-count"></span></div>
  </section>
- <div class="notice" data-i18n-html="notice"><strong>AI-collected information — not independently verified.</strong> Details may be inaccurate or outdated.</div>
- <section class="panel table-panel" id="studio-list" aria-labelledby="table-title">
-  <div class="panel-head"><div><h2 id="table-title"><span data-i18n="table.title">Studio directory</span> <span class="mini-count" id="table-count"></span></h2><p data-i18n="table.subtitle">One profile per document entry · expand for all details</p></div><div class="table-toolbar"><label for="sort" data-i18n="table.sort">Sort by</label><select id="sort"><option value="name" data-i18n="table.sort.name">Studio A–Z</option><option value="investor" data-i18n="table.sort.investor">Investor A–Z</option><option value="country" data-i18n="table.sort.country">Country A–Z</option><option value="jobs" data-i18n="table.sort.jobs">Most positions first</option></select><button id="expand-all" data-i18n="table.expand">Expand all</button></div></div>
+ <section class="panel table-panel" id="studio-list" role="tabpanel" aria-labelledby="tab-list" tabindex="0" hidden>
+  <div class="panel-head"><div class="map-actions"><button id="expand-all" data-i18n="table.expand">Expand all</button><span class="mini-count" id="table-count"></span></div><div class="table-toolbar"><label for="sort" data-i18n="table.sort">Sort by</label><select id="sort"><option value="name" data-i18n="table.sort.name">Studio A–Z</option><option value="investor" data-i18n="table.sort.investor">Investor A–Z</option><option value="country" data-i18n="table.sort.country">Country A–Z</option><option value="jobs" data-i18n="table.sort.jobs">Most positions first</option></select></div></div>
   <div class="table-scroll"><table id="studio-table"><thead><tr><th scope="col" data-i18n="table.col.studio">Studio</th><th scope="col" data-i18n="table.col.genre">Genre</th><th scope="col" data-i18n="table.col.country">Country</th><th scope="col" data-i18n="table.col.investor">Investor / Parent Company</th><th scope="col" data-i18n="table.col.project">Project per document</th></tr></thead><tbody id="studio-rows"></tbody></table></div>
   <div class="empty" id="table-empty" hidden data-i18n="table.empty">No studios found. Please adjust the shared filters.</div>
  </section>
@@ -118,10 +148,11 @@ const translations = {
     'filter.foot':'Filters apply jointly to map, key figures, and list. Studios assigned to multiple genres and engines are fully considered.',
     'filter.footnote':'* AI-collected information; not independently verified.','filter.show':'Show filters','filter.hide':'Hide filters',
     'stats.aria':'Key figures of the filtered selection','stats.studios':'Studio profiles · filtered','stats.countries':'Countries in selection','stats.hiring':'Studios with open positions','stats.jobs':'Unique job postings',
+    'view.label':'Studio view','view.map':'Map','view.list':'List',
     'map.title':'The studio map','map.career':'Career','map.career.all':'All','map.color':'Color mode','map.color.genre':'Genre','map.color.engine':'Engine','map.color.stability':'Job security *','map.color.investor':'Investor','map.color.jobs':'Career status',
     'map.view.world':'World','map.view.europe':'Europe','map.view.asia':'Asia','map.view.northamerica':'North America','map.view.southamerica':'South America','map.view.africa':'Africa','map.view.oceania':'Oceania',
     'map.fit':'Fit selection','map.aria':'Interactive world map with studio markers. Select markers with Tab, open profile with Enter. Plus and minus zoom, arrow keys pan.',
-    'map.hint':'Hover: profile · Click: pin · Drag: pan · Wheel: zoom','map.zoom.in':'Zoom in','map.zoom.out':'Zoom out','map.zoom.home':'Restore world view','map.legend.aria':'Color legend',
+    'map.hint':'Hover: profile · Click: pin · Drag: pan · Wheel: zoom','map.zoom.in':'Zoom in','map.zoom.out':'Zoom out','map.zoom.home':'Restore world view','map.legend.aria':'Color legend','map.legend.hint':'Toggle legend entries to show or hide pins.',
     'map.credit':'Natural Earth · Public Domain · city centers with selection offset, not office addresses',
     'map.empty':'No locations for this filter combination.<br>Reset filters or widen the selection.',
     'notice':'<strong>AI-collected information — not independently verified.</strong> Details may be inaccurate or outdated.',
@@ -173,10 +204,11 @@ const translations = {
     'filter.foot':'Filter wirken gemeinsam auf Karte, Kennzahlen und Liste. Mehrfach zugeordnete Genres und Engines werden berücksichtigt.',
     'filter.footnote':'* Mit KI erfasste Informationen; nicht unabhängig verifiziert.','filter.show':'Filter einblenden','filter.hide':'Filter ausblenden',
     'stats.aria':'Kennzahlen der gefilterten Auswahl','stats.studios':'Studio-Profile · gefiltert','stats.countries':'Länder in der Auswahl','stats.hiring':'Studios mit offenen Stellen','stats.jobs':'Eindeutige Stellenanzeigen',
+    'view.label':'Studio-Ansicht','view.map':'Karte','view.list':'Liste',
     'map.title':'Die Studio-Landkarte','map.career':'Berufsfeld','map.career.all':'Alle','map.color':'Farbmodus','map.color.genre':'Genre','map.color.engine':'Engine','map.color.stability':'Zukunftssicherheit *','map.color.investor':'Investor','map.color.jobs':'Karriere-Status',
     'map.view.world':'Welt','map.view.europe':'Europa','map.view.asia':'Asien','map.view.northamerica':'Nordamerika','map.view.southamerica':'Südamerika','map.view.africa':'Afrika','map.view.oceania':'Ozeanien',
     'map.fit':'Auswahl einpassen','map.aria':'Interaktive Weltkarte mit Studio-Markern. Mit Tab Marker auswählen, mit Enter Profil öffnen. Plus und Minus zoomen, Pfeiltasten verschieben.',
-    'map.hint':'Hover: Profil · Klick: anheften · Ziehen: verschieben · Mausrad: Zoom','map.zoom.in':'Karte vergrößern','map.zoom.out':'Karte verkleinern','map.zoom.home':'Weltansicht wiederherstellen','map.legend.aria':'Farblegende',
+    'map.hint':'Hover: Profil · Klick: anheften · Ziehen: verschieben · Mausrad: Zoom','map.zoom.in':'Karte vergrößern','map.zoom.out':'Karte verkleinern','map.zoom.home':'Weltansicht wiederherstellen','map.legend.aria':'Farblegende','map.legend.hint':'Legendeneinträge umschalten, um Pins ein- oder auszublenden.',
     'map.credit':'Natural Earth · Public Domain · Stadtzentren mit Auswahlversatz, keine Büroadressen',
     'map.empty':'Keine Standorte für diese Filterkombination.<br>Filter zurücksetzen oder Auswahl erweitern.',
     'notice':'<strong>Mit KI erfasste Informationen — nicht unabhängig verifiziert.</strong> Angaben können ungenau oder veraltet sein.',
@@ -219,7 +251,7 @@ const translations = {
   },
 };
 const valueNamesDe = {
-  'Stable per Document':'Stabil laut Dokument','In Transition / Mixed':'Im Wandel / gemischt','Elevated Risk':'Erhöhtes Risiko','Unclear':'Nicht eindeutig',
+  'Stable per Document':'Stabil','In Transition / Mixed':'Im Wandel / gemischt','Elevated Risk':'Erhöhtes Risiko','Unclear':'Nicht eindeutig',
   'Positions found':'Stellen gefunden','No matching portal results':'Keine passenden Portal-Treffer','Not fully verifiable':'Nicht vollständig prüfbar','Source unavailable':'Quelle nicht erreichbar',
   'Hit':'Treffer','No portal hits':'Keine Portal-Treffer','Unknown':'Unbekannt',
   'Strategy / Building':'Strategie / Aufbau','Racing':'Rennspiele','Technology / Tools':'Technologie / Tools','Fighting':'Prügelspiel','Music':'Musik','Various':'Divers',
@@ -235,7 +267,7 @@ const valueNamesDe = {
 };
 const t = key => translations[lang][key] ?? translations.en[key] ?? key;
 const tf = (key, vars) => Object.entries(vars).reduce((text, [name, value]) => text.replaceAll(`{${name}}`, value), t(key));
-const tv = value => lang === 'de' ? (DATA.careerCategoryNamesDe?.[value] ?? valueNamesDe[value] ?? value) : value;
+const tv = value => lang === 'de' ? (DATA.careerCategoryNamesDe?.[value] ?? valueNamesDe[value] ?? value) : value === 'Stable per Document' ? 'Stable' : value;
 const locale = () => lang === 'de' ? 'de' : 'en';
 const palette = ['#a9f27d','#79b9ff','#e1a4fa','#ffbf79','#6cddd3','#f38ca7','#d6d978','#a5abff','#e7a176','#75c4a4','#bda2d5','#e2c3a0','#67bee8','#df87c2','#90b4d2','#b9ce96','#e5b4b1','#c4b9f1'];
 const fixedColors = {'Stable per Document':'#a9f27d','In Transition / Mixed':'#ffbf79','Elevated Risk':'#f38ca7','Unclear':'#8996ab','Positions found':'#a9f27d','No matching portal results':'#e5bf7c','Not fully verifiable':'#8996ab','Source unavailable':'#b591b9','Hit':'#a9f27d','No portal hits':'#e5bf7c','Unknown':'#8996ab'};
@@ -255,12 +287,15 @@ function populate(id, values, label = value => tv(value)) {
   for (const value of sortedUnique(values)) select.add(new Option(label(value), value));
   select.value = current;
 }
+const careerSelectIds = ['map-career'];
+
 function populateCareerOptions() {
-  for (const [selectId, groupId] of [['jobs','job-category-options'],['map-career','map-career-options']]) {
+  for (const [selectId, groupId] of [['jobs','job-category-options'],...careerSelectIds.map(id=>[id,id==='map-career'?'map-career-options':`${id}-options`])]) {
+    const current = $(selectId).value;
     const group = $(groupId);
     group.label = t('filter.jobs.group');
     group.replaceChildren(...categories.map(category => new Option(tv(category), category)));
-    if (!categories.includes($(selectId).value) && $(selectId).value) $(selectId).value = '';
+    $(selectId).value = current;
   }
 }
 function populateFilters() {
@@ -382,6 +417,7 @@ function renderTable() {
 function updateResults() {
   closeProfile();
   $('map-career').value = categories.includes($('jobs').value) ? $('jobs').value : '';
+  for (const id of careerSelectIds) $(id).value = $('map-career').value;
   visibleStudios = DATA.studios.filter(studioMatches);
   const sites = visibleStudios.flatMap(matchingSites);
   const selectedCareer = $('jobs').value;
@@ -419,7 +455,6 @@ function updateMap() {
   const studios = mapStudios();
   const sites = studios.flatMap(matchingSites);
   $('location-count').textContent = tf('dyn.locationCount',{count:sites.length});
-  $('map-subtitle').textContent = tf('dyn.mapSubtitle',{profiles:studios.length,sites:sites.length});
   $('map-empty').hidden = sites.length>0;
   renderMarkers();
   renderLegend();
@@ -545,10 +580,40 @@ function scheduleClose() {
   if (!pinned) closeTimer=setTimeout(()=>closeProfile(),240);
 }
 
+function selectView(view) {
+  closeProfile();
+  for (const name of ['map','list']) {
+    const selected=name===view;
+    $(`tab-${name}`).setAttribute('aria-selected',String(selected));
+    $(`tab-${name}`).tabIndex=selected?0:-1;
+    $(`studio-${name}`).hidden=!selected;
+  }
+}
+
+$('view-tabs').addEventListener('click',event=>{
+  const tab=event.target.closest('[role="tab"]');
+  if(tab) selectView(tab.id==='tab-map'?'map':'list');
+});
+$('view-tabs').addEventListener('keydown',event=>{
+  if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+  event.preventDefault();
+  const view=event.key==='Home'?'map':event.key==='End'?'list':$('tab-map').getAttribute('aria-selected')==='true'?'list':'map';
+  selectView(view);
+  $(`tab-${view}`).focus();
+});
+document.querySelector('a[href="#studio-list"]').addEventListener('click',()=>selectView('list'));
+function applyViewHash() {
+  if(location.hash==='#studio-list') selectView('list');
+  if(location.hash==='#studio-map') selectView('map');
+}
+window.addEventListener('hashchange',applyViewHash);
+if(location.hash==='#studio-list') history.replaceState(null,'',`${location.pathname}${location.search}#studio-map`);
+selectView('map');
+
 for (const id of filterIds) $(id).addEventListener('change',updateResults);
 $('search').addEventListener('input',updateResults);
 $('reset').addEventListener('click',()=>{ for (const id of filterIds) $(id).value=''; $('search').value=''; hiddenLegendKeys.clear(); updateResults(); });
-$('map-career').addEventListener('change',()=>{$('jobs').value=$('map-career').value;updateResults();});
+for (const id of careerSelectIds) $(id).addEventListener('change',()=>{$('jobs').value=$(id).value;updateResults();});
 $('color-mode').addEventListener('change',()=>{closeProfile();updateMap();});
 $('legend').addEventListener('click',event=>{
   const button=event.target.closest('[data-legend-key]');
@@ -651,7 +716,7 @@ function applyLanguage(next) {
   closeProfile();
   initializeMap();
   initializeSummary();
-  $('last-updated').textContent = tf('dyn.lastUpdated',{date:new Intl.DateTimeFormat('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date(DATA.updatedAt))});
+  $('last-updated').textContent = tf('dyn.lastUpdated',{date:new Intl.DateTimeFormat(lang==='de'?'de-DE':'en-GB',{day:'numeric',month:'long',year:'numeric'}).format(new Date(DATA.updatedAt))});
   $('footer-date').textContent = tf('dyn.footerDate',{date:formatDate(DATA.updatedAt)});
   updateResults();
 }

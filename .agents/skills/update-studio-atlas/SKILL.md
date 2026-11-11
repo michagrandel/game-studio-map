@@ -109,7 +109,7 @@ the GitHub Pages entry point. Never introduce a differently named report copy.
   cache. `--reparse` remains an offline development utility, not the maintenance
   workflow.
 - Each successful build records `updatedAt` for the header's
-  `Last updated: DD.MM.YYYY`. It is the report update date, not proof of new
+  `Last updated: 12 November 2026` (localized month name). It is the report update date, not proof of new
   research. Career research keeps its own timestamps; studio collection dates
   remain in the source.
 
